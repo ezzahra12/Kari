@@ -1,0 +1,52 @@
+CREATE DATABASE kari;
+
+USE kari;
+
+CREATE TABLE users(
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(60) NOT NULL,
+    email VARCHAR(150) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    role ENUM('admin', 'host', 'traveler') DEFAULT 'traveler' NOT NULL,
+    isActive BOOLEAN NOT NULL DEFAULT TRUE
+);
+
+CREATE TABLE rentals(
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(150) NOT NULL,
+    city VARCHAR(50) NOT NULL,
+    pricePerNight FLOAT NOT NULL,
+    isActive BOOLEAN NOT NULL DEFAULT TRUE,
+    isAvailable BOOLEAN NOT NULL DEFAULT TRUE,
+    id_host INT NOT NULL,
+    FOREIGN KEY(id_host) REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+CREATE TABLE reservations(
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    startDate DATETIME NOT NULL,
+    endDate DATETIME NOT NULL,
+    totalPrice FLOAT NOT NULL,
+    id_traveler INT NOT NULL,
+    id_rental INT NOT NULL,
+    FOREIGN KEY(id_traveler) REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY(id_rental) REFERENCES rentals(id) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+CREATE TABLE reviews(
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    rating INT NOT NULL,
+    comment TEXT NOT NULL,
+    id_traveler INT NOT NULL,
+    id_rental INT NOT NULL,
+    FOREIGN KEY(id_traveler) REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY(id_rental) REFERENCES rentals(id) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+CREATE TABLE favorites(
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    id_traveler INT NOT NULL,
+    id_rental INT NOT NULL,
+    FOREIGN KEY(id_traveler) REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY(id_rental) REFERENCES rentals(id) ON DELETE CASCADE ON UPDATE CASCADE
+);
