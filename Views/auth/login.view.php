@@ -75,12 +75,12 @@
 <p class="text-text-primary dark:text-stone-400 text-base">Please enter your details to sign in.</p>
 </div>
 <!-- Form -->
-<form action="#" class="space-y-5">
+<form action="/Controllers/AuthController.php" method="POST" class="space-y-5">
 <!-- Email Field -->
 <div class="space-y-2">
 <label class="block text-sm font-semibold text-text-dark dark:text-stone-200" for="email">Email address</label>
 <div class="relative">
-<input class="block w-full rounded-lg border-stone-300 bg-white dark:bg-stone-800 dark:border-stone-700 dark:text-white py-3 pl-4 pr-10 text-base focus:border-primary focus:ring-primary shadow-sm placeholder:text-stone-400" id="email" placeholder="user@example.com" type="email"/>
+<input class="block w-full rounded-lg border-stone-300 bg-white dark:bg-stone-800 dark:border-stone-700 dark:text-white py-3 pl-4 pr-10 text-base focus:border-primary focus:ring-primary shadow-sm placeholder:text-stone-400" id="email" name="email" placeholder="user@example.com" type="email"/>
 <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
 <span class="material-symbols-outlined text-stone-400 text-[20px]">mail</span>
 </div>
@@ -92,15 +92,15 @@
 <label class="block text-sm font-semibold text-text-dark dark:text-stone-200" for="password">Password</label>
 </div>
 <div class="relative">
-<input class="block w-full rounded-lg border-stone-300 bg-white dark:bg-stone-800 dark:border-stone-700 dark:text-white py-3 pl-4 pr-10 text-base focus:border-primary focus:ring-primary shadow-sm placeholder:text-stone-400" id="password" placeholder="••••••••" type="password"/>
-<button class="absolute inset-y-0 right-0 flex items-center pr-3 hover:text-primary transition-colors" type="button">
+<input class="block w-full rounded-lg border-stone-300 bg-white dark:bg-stone-800 dark:border-stone-700 dark:text-white py-3 pl-4 pr-10 text-base focus:border-primary focus:ring-primary shadow-sm placeholder:text-stone-400" id="password" name="password" placeholder="••••••••" type="password"/>
+<button class="absolute inset-y-0 right-0 flex items-center pr-3 hover:text-primary transition-colors" type="submit">
 <span class="material-symbols-outlined text-stone-400 hover:text-primary text-[20px]">visibility_off</span>
 </button>
 </div>
 </div>
 
 <!-- Submit Button -->
-<button class="flex w-full items-center justify-center rounded-lg bg-primary py-3 text-sm font-bold text-white shadow-md hover:bg-[#a6746d] focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 transition-all duration-200" type="submit">
+<button class="flex w-full items-center justify-center rounded-lg bg-primary py-3 text-sm font-bold text-white shadow-md hover:bg-[#a6746d] focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 transition-all duration-200" name="login" type="submit">
             Sign in
           </button>
 </form>

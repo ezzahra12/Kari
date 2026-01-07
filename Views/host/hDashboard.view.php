@@ -93,10 +93,10 @@
                         Contact Support <span class="material-symbols-outlined text-[14px]">arrow_forward</span>
 </button>
 </div>
-<button class="flex w-full cursor-pointer items-center justify-center overflow-hidden rounded-xl h-11 px-4 bg-primary hover:bg-primary-dark text-white shadow-md shadow-primary/30 transition-all active:scale-[0.98]">
+<a href="/views/host/createRental.view.php" class="flex w-full cursor-pointer items-center justify-center overflow-hidden rounded-xl h-11 px-4 bg-primary hover:bg-primary-dark text-white shadow-md shadow-primary/30 transition-all active:scale-[0.98]">
 <span class="material-symbols-outlined mr-2 text-[20px]">add_business</span>
 <span class="text-sm font-bold tracking-wide">Create Rental</span>
-</button>
+      </a>
 </div>
 </div>
 </aside>

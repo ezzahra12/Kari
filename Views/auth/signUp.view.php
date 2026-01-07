@@ -80,7 +80,9 @@
 <h1 class="text-3xl font-bold text-[#161313] tracking-tight mb-2">Create an account</h1>
 <p class="text-custom-text/70 text-sm">Join our community of travelers and hosts today.</p>
 </div>
-<!-- Role Selector (Segmented Buttons) -->
+
+<form action="/Controllers/AuthController.php" class="space-y-5" method="POST">
+    <!-- Role Selector (Segmented Buttons) -->
 <div class="mb-8">
 <div class="flex p-1 bg-[#f3f2f1] rounded-xl relative">
 <label class="flex-1 relative cursor-pointer group">
@@ -97,23 +99,22 @@
 </label>
 </div>
 </div>
-<form action="#" class="space-y-5" method="POST">
 <!-- Name Fields -->
 <div class="flex gap-4">
 <div class="flex-1">
 <label class="block text-sm font-medium text-custom-text mb-1.5" for="first-name">First Name</label>
-<input class="w-full h-12 px-4 bg-white border border-[#e2dfdf] rounded-lg text-custom-text placeholder:text-custom-text/40 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all shadow-sm" id="first-name" placeholder="Jane" type="text"/>
+<input class="w-full h-12 px-4 bg-white border border-[#e2dfdf] rounded-lg text-custom-text placeholder:text-custom-text/40 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all shadow-sm" id="first-name" name="firstName" placeholder="Jane" type="text"/>
 </div>
 <div class="flex-1">
 <label class="block text-sm font-medium text-custom-text mb-1.5" for="last-name">Last Name</label>
-<input class="w-full h-12 px-4 bg-white border border-[#e2dfdf] rounded-lg text-custom-text placeholder:text-custom-text/40 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all shadow-sm" id="last-name" placeholder="Doe" type="text"/>
+<input class="w-full h-12 px-4 bg-white border border-[#e2dfdf] rounded-lg text-custom-text placeholder:text-custom-text/40 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all shadow-sm" id="last-name" name="lastName" placeholder="Doe" type="text"/>
 </div>
 </div>
 <!-- Email Field -->
 <div>
 <label class="block text-sm font-medium text-custom-text mb-1.5" for="email">Email address</label>
 <div class="relative">
-<input class="w-full h-12 pl-10 pr-4 bg-white border border-[#e2dfdf] rounded-lg text-custom-text placeholder:text-custom-text/40 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all shadow-sm" id="email" placeholder="jane@example.com" type="email"/>
+<input class="w-full h-12 pl-10 pr-4 bg-white border border-[#e2dfdf] rounded-lg text-custom-text placeholder:text-custom-text/40 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all shadow-sm" id="email" name="email" placeholder="jane@example.com" type="email"/>
 <span class="material-symbols-outlined absolute left-3 top-3 text-custom-text/40 text-[20px]">mail</span>
 </div>
 </div>
@@ -121,7 +122,7 @@
 <div>
 <label class="block text-sm font-medium text-custom-text mb-1.5" for="password">Password</label>
 <div class="relative">
-<input class="w-full h-12 pl-10 pr-10 bg-white border border-[#e2dfdf] rounded-lg text-custom-text placeholder:text-custom-text/40 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all shadow-sm" id="password" placeholder="••••••••" type="password"/>
+<input class="w-full h-12 pl-10 pr-10 bg-white border border-[#e2dfdf] rounded-lg text-custom-text placeholder:text-custom-text/40 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all shadow-sm" id="password" name="password" placeholder="••••••••" type="password"/>
 <span class="material-symbols-outlined absolute left-3 top-3 text-custom-text/40 text-[20px]">lock</span>
 <button class="absolute right-3 top-3 text-custom-text/40 hover:text-custom-text transition-colors" type="button">
 <span class="material-symbols-outlined text-[20px]">visibility_off</span>
@@ -131,7 +132,7 @@
 </div>
 
 <!-- Submit Button -->
-<button class="w-full h-12 bg-primary hover:bg-[#a6756e] text-white font-bold rounded-lg shadow-[0_4px_10px_rgba(185,133,126,0.3)] transition-all transform active:scale-[0.99] flex items-center justify-center gap-2 mt-4" type="submit">
+<button class="w-full h-12 bg-primary hover:bg-[#a6756e] text-white font-bold rounded-lg shadow-[0_4px_10px_rgba(185,133,126,0.3)] transition-all transform active:scale-[0.99] flex items-center justify-center gap-2 mt-4" name="register" type="submit">
                             Create Account
                         </button>
 </form>

@@ -1,4 +1,10 @@
+<?php
+require_once __DIR__ . '/../../Models/database.php';
+require_once __DIR__ . '/../../models/Host.php';
+session_start();
+?>
 <!DOCTYPE html>
+
 
 <html class="light" lang="en"><head>
 <meta charset="utf-8"/>
@@ -96,7 +102,7 @@
 </div>
 <!-- Bottom Actions -->
 <div class="flex flex-col gap-2 border-t border-border-light dark:border-border-dark pt-4">
-<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/10 transition-colors group" href="#">
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/10 transition-colors group" href="">
 <span class="material-symbols-outlined text-text-muted group-hover:text-red-500 transition-colors">logout</span>
 <span class="text-text-main dark:text-gray-300 text-sm font-medium group-hover:text-red-500 transition-colors">Log Out</span>
 </a>
@@ -119,10 +125,10 @@
 <span class="material-symbols-outlined text-[20px]">file_download</span>
 <span>Export</span>
 </button>
-<button class="flex items-center justify-center gap-2 h-10 px-5 bg-primary text-white rounded-lg text-sm font-semibold shadow-md shadow-primary/20 hover:bg-primary/90 transition-all transform active:scale-95">
+<a href="/Views/host/createRental.view.php" class="flex items-center justify-center gap-2 h-10 px-5 bg-primary text-white rounded-lg text-sm font-semibold shadow-md shadow-primary/20 hover:bg-primary/90 transition-all transform active:scale-95">
 <span class="material-symbols-outlined text-[20px]">add</span>
 <span>Add New Rental</span>
-</button>
+ </a>
 </div>
 </div>
 <!-- Stats Cards -->
@@ -212,48 +218,52 @@
 </tr>
 </thead>
 <tbody class="divide-y divide-border-light dark:divide-border-dark">
-<!-- Row 1 -->
-<tr class="group hover:bg-gray-50 dark:hover:bg-neutral-800/50 transition-colors">
-<td class="py-4 px-6">
-<div class="flex items-center gap-4">
-<div class="w-16 h-12 rounded-lg bg-cover bg-center shrink-0 border border-border-light dark:border-border-dark shadow-sm" data-alt="Cozy loft interior with large windows and modern furniture" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuA7TgeKhMOMsrqZ1I8Sdib7wk0K5ZcUkWEtr9GpWlhsEQVy_mwB8poZZagRvn7Ywedv14MfEy-eUs0g87lI1diwHRNXrT3qtcnoyqV5sY6Iep_rfveaYw1z2Mr-ToYJOtsNjY5AZM-81NEN4zWKNJpeMt15XGQ7JVSvmELLCP8hC488L39GeR9oDZ0DHRQMVeovFeG9vtzabv36Iu_imuwpn9kBFl0t0idc9f0w5V84bYkIT-UzS-y8Fz5-3iDt4yZdx_6v8j317TM');"></div>
-<div class="flex flex-col">
-<span class="font-bold text-text-main dark:text-white text-sm line-clamp-1">Cozy Loft in Downtown</span>
-<span class="text-xs text-text-muted">ID: #R-1024</span>
+<?php 
+$pdo = Database::getConnection();
+$HOST = $_SESSION['user']->getId();
+
+$stmt = $pdo->prepare("SELECT * FROM rentals WHERE id_host = ?");
+$stmt->execute([$HOST]);
+
+$rentals = $stmt->fetchAll(PDO::FETCH_ASSOC);
+$host= $_SESSION['user'];
+foreach ($rentals as $rental) {
+    
+    echo "
+<tr class='group hover:bg-gray-50 dark:hover:bg-neutral-800/50 transition-colors'>
+<td class='py-4 px-6'>
+<div class='w-16 h-12 rounded-lg bg-cover bg-center shrink-0 border shadow-sm'
+     style=\"background-image: url('/public/uploads/" . htmlspecialchars($rental['cover_image']) . "');\">
+</div>
+
+
+<div class='flex flex-col'>
+<span class='font-bold text-sm'>Rental #{$rental['id']}</span>
+<span class='text-xs text-gray-500'>{$rental['title']}</span>
 </div>
 </div>
 </td>
-<td class="py-4 px-6">
-<div class="flex items-center gap-2">
-<div class="w-6 h-6 rounded-full bg-cover bg-center shrink-0" data-alt="Profile picture of Jane Doe" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAjrM3lLc56ahtY6UkMihECTkGruH_zexgiVq_7ya6X_A4ama7FcsIZYkfcHgtv_fx9sn8Rp1NPvHBcAB8T5XT_3rhkCOJ405oj-757-ioXp_vh6a-KOjCP7TQUVt5uqHrGaexuTE-8EyRcR8Zztz8Q24_xbDIFQEOaciz7Lp84ROznKjZmDHIImCJVA2tbvZXmXvsGVy2ZSv1do7_jbC_bQyhFvXrYnoe0GEklAlVg08w4To_yf46n_d34lTAzKuCGeQZ9GzFzhCU');"></div>
-<span class="text-sm font-medium text-text-main dark:text-gray-300">Jane Doe</span>
+<td class='py-4 px-6'>
+<div class='flex items-center gap-2'>
+<div class='w-6 h-6 rounded-full bg-cover bg-center shrink-0' data-alt='Profile picture of Mark Smith' style='background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDI7RAfUvonItboNddTqvaKI7Y8zrFcLE5LOfg1LFI1ypmMfj9v5MptkB5kqQBXueUSDAZLOSM2TvkOzYdecWqk2sUaJ1viYLCfXrh9fx28ThS9Y5afJ51qHTsa-02qDGOEtSFIgOmU1w_wI5X2Sidrox4B5k4co1OdlzmQu7Uoy5eWVLf47ACDYuTqSJzKFd5iYOAPk_tTBmydoAIZ19ojVzrOMZ-jjwfhTSShaC3Jvmp3k7E8jlb-P66cG_rR24dSsblBqvqhHxE');'></div>
+<span class='text-sm font-medium text-text-main dark:text-gray-300'>$host->name</span>
 </div>
 </td>
-<td class="py-4 px-6">
-<span class="text-sm text-text-main dark:text-gray-300">New York, NY</span>
+<td class='py-4 px-6'>
+<span class='text-sm text-text-main dark:text-gray-300'>{$rental['city']}</span>
 </td>
-<td class="py-4 px-6">
-<span class="text-sm font-bold text-text-main dark:text-gray-200">$185<span class="text-text-muted font-normal text-xs">/night</span></span>
+
+<td class='py-4 px-6'>
+<span class='text-sm font-bold'>{$rental['pricePerNight']} DH
+<span class='text-xs text-gray-400'>/night</span>
+</span>
 </td>
-<td class="py-4 px-6">
-<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300">
-<span class="w-1.5 h-1.5 bg-green-500 rounded-full mr-1.5"></span>
-                                                Active
-                                            </span>
-</td>
-<td class="py-4 px-6 text-right">
-<div class="flex items-center justify-end gap-2">
-<!-- Custom Switch Component for 'Active' state -->
-<button aria-checked="true" class="relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none bg-primary" role="switch">
-<span class="translate-x-5 pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out"></span>
-</button>
-<button class="p-1 rounded-md hover:bg-gray-200 dark:hover:bg-neutral-700 text-text-muted hover:text-text-main transition-colors">
-<span class="material-symbols-outlined text-[20px]">more_vert</span>
-</button>
-</div>
-</td>
-</tr>
-<!-- Row 2 -->
+</tr>";
+}
+?>
+</tbody>
+<!-- 
+ Row 2 
 <tr class="group hover:bg-gray-50 dark:hover:bg-neutral-800/50 transition-colors">
 <td class="py-4 px-6">
 <div class="flex items-center gap-4">
@@ -284,7 +294,7 @@
 </td>
 <td class="py-4 px-6 text-right">
 <div class="flex items-center justify-end gap-2">
-<!-- Switch Inactive -->
+ Switch Inactive -->
 <button aria-checked="false" class="relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none bg-gray-200 dark:bg-gray-600" role="switch">
 <span class="translate-x-0 pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out"></span>
 </button>
@@ -414,7 +424,7 @@
 </div>
 </td>
 </tr>
-</tbody>
+</tbody> 
 </table>
 </div>
 <!-- Pagination -->
