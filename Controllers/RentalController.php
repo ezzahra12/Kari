@@ -48,6 +48,35 @@ class RentalController{
         header("location:  /views/host/hDashboard.view.php");
         echo "Rental created successfully!";
     }
+
+     public function deleteRental() {
+        if (!isset($_POST['id'])) {
+            die('Invalid request');
+        }
+
+        $rentalId = (int) $_POST['id'];
+        $host = $_SESSION['user'];
+
+  
+        $host->deleteRental($rentalId);
+
+        header("Location: /views/host/Rentals.view.php");
+        exit;
+    }
+
+    public function updateRental(){  
+      $rentalId = $_POST['id'];
+    $title    = $_POST['title'];
+    $city     = $_POST['city'];
+    $price    = $_POST['price'];
+
+    $pdo = Database::getConnection();
+   $host = $_SESSION['user'];
+  $host->updateRental($rentalId, $title, $city, $price);
+
+    header("Location: /Views/host/Rentals.view.php");
+    exit;
+}
 }
 
 
@@ -61,6 +90,13 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
     $Rent->createRental();
 
   }
+  if (isset($_POST['deleteRental'])) {
+    $Rent->deleteRental();
 
-  
+  }
+    if (isset($_POST['updateRental'])) {
+    $Rent->updateRental();
+
+  }
+ 
 }

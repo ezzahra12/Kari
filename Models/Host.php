@@ -31,6 +31,29 @@ class Host extends User {
         
     }
 
+    public function deleteRental($rentalId) {
+    $pdo = Database::getConnection();
+
+    $stmt = $pdo->prepare(
+        "DELETE FROM rentals 
+         WHERE id = ? AND id_host = ?"
+    );
+
+    $stmt->execute([$rentalId, $this->getId()]);
+}
+
+ public function updateRental($rentalId, $title, $city, $price){
+        $pdo = Database::getConnection();
+        $stmt = $pdo->prepare("UPDATE rentals SET title = ?, city = ?, pricePerNight = ? WHERE id = ? AND id_host = ?");
+        return $stmt->execute([$title, $city, $price, $rentalId, $this->id]);
+    }
+  public function getRentals(){
+        $pdo = Database::getConnection();
+        $stmt = $pdo->prepare("SELECT * FROM rentals WHERE id_host = ?");
+        $stmt->execute([$this->id]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
     public function get_name () {
         return $this->name;
     }
