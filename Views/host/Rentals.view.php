@@ -2,6 +2,8 @@
 require_once __DIR__ . '/../../Models/database.php';
 require_once __DIR__ . '/../../models/Host.php';
 session_start();
+$HOST = $_SESSION['user']->getId();
+$host= $_SESSION['user'];
 ?>
 <!DOCTYPE html>
 
@@ -63,28 +65,28 @@ session_start();
 <body class="bg-background-light dark:bg-background-dark text-text-main dark:text-gray-200 transition-colors duration-200">
 <div class="flex h-screen w-full overflow-hidden">
 <!-- SideNavBar -->
-<aside class="w-64 flex-shrink-0 flex flex-col border-r border-border-light dark:border-border-dark bg-surface-light dark:bg-surface-dark transition-colors duration-200">
-<div class="h-full flex flex-col justify-between p-4">
-<div class="flex flex-col gap-6">
-<!-- Brand/Profile -->
-<div class="flex items-center gap-3 px-2">
-<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 ring-2 ring-primary/20" data-alt="Profile picture of the admin user" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBxqzunylhYYuSVy-NAxAvqfxzNZsSWe1n6rMBF0d9LNC888i0xL11j9ReWnQW026riES0ZBJNlAehVlVoBAm5aOa5id0lYM9SION5Ihh3hfK1geyWxho93upxo6kRIRbR0KPO1CMwi6sI4gqLBkQ9ULujMyeGBraxwApa9O7SMx-c1_rbphC8Fj3vUbelPOYkRcsaqi7dbkUR2GKT7_g-t8youdkQemLQ78sUMPTxiUi25SnLqYShOiiIU2q08FU4F3qC3gCFAskk");'>
-</div>
+
+<aside class="w-64 bg-background-card dark:bg-[#2a2423] border-r border-[#e6e2de] dark:border-[#3a3433] flex-shrink-0 flex flex-col h-screen fixed left-0 top-0 z-10 shadow-soft transition-all duration-300">
+<div class="p-6 flex flex-col h-full justify-between">
+<div class="flex flex-col gap-8">
+<!-- Branding / Profile -->
+<div class="flex items-center gap-3">
+<div class="bg-center bg-no-repeat bg-cover rounded-full size-12 shadow-sm border-2 border-white dark:border-[#3a3433]" data-alt="Portrait of Sarah Jenkins smiling warmly" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuD9nkFOQKkZNmaYrHGTqjylCInk8b3xMuonBq_aCtGnpqR8oMMbVpseYMHS1goBu4-NUsroncZC6UPFKrpaWIEEKPugGKLrROWxlIggHkcTwO69yyCqOlzwI085FYQFSuxX0dORKTqhmp3xH7zt_0-lNLlTSSkNriIFE-rZi424-OuTcAOh8Po_rXG3WQ5pxRg5bPf1XPNOP-BvoD6oQqgbJKIKXTGlatDsntIURcALopdf8nwKS3bbTfcQQrNiwSxB3msx2Lp1Ico");'></div>
 <div class="flex flex-col">
-<h1 class="text-text-main dark:text-white text-base font-bold leading-tight">Admin Portal</h1>
-<p class="text-text-muted text-xs font-normal">Management Console</p>
+<h1 class="text-text-main dark:text-gray-100 text-base font-bold leading-tight">Sarah Jenkins</h1>
+<p class="text-[#9CA3AF] text-xs font-medium uppercase tracking-wide">Superhost</p>
 </div>
 </div>
-<!-- Navigation Links -->
-<nav class="flex flex-col gap-1">
-<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-background-light dark:hover:bg-background-dark/50 transition-colors group" href="/Views/host/hDashboard.view.php">
-<span class="material-symbols-outlined text-text-muted group-hover:text-primary transition-colors">grid_view</span>
-<span class="text-text-main dark:text-gray-300 text-sm font-medium group-hover:text-primary transition-colors">Dashboard</span>
+<!-- Navigation -->
+<nav class="flex flex-col gap-2">
+<a class="sidebar-item group flex items-center gap-3 px-4 py-3 rounded-xl bg-primary/10 text-primary dark:text-primary-dark transition-colors" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<p class="text-sm font-semibold">Dashboard</p>
 </a>
-<!-- Active Link -->
+
 <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-primary/10 dark:bg-primary/20 text-primary" href="/Views/host/Rentals.view.php">
-<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">holiday_village</span>
-<span class="text-sm font-bold">Rentals</span>
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">real_estate_agent</span>
+<span class="text-sm font-bold">My Rentals</span>
 </a>
 <a class="sidebar-item group flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-[#f3f2f1] dark:hover:bg-[#3a3433] text-text-main dark:text-gray-300 transition-colors" href="/Views/host/hResevation.view.php">
 <span class="material-symbols-outlined">calendar_month</span>
@@ -94,18 +96,25 @@ session_start();
 <span class="material-symbols-outlined">reviews</span>
 <p class="text-sm font-medium">Reviews</p>
 </a>
-<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-background-light dark:hover:bg-background-dark/50 transition-colors group" href="#">
-<span class="material-symbols-outlined text-text-muted group-hover:text-primary transition-colors">settings</span>
-<span class="text-text-main dark:text-gray-300 text-sm font-medium group-hover:text-primary transition-colors">Settings</span>
+
+<a class="sidebar-item group flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-[#f3f2f1] dark:hover:bg-[#3a3433] text-text-main dark:text-gray-300 transition-colors" href="#">
+<span class="material-symbols-outlined">settings</span>
+<p class="text-sm font-medium">Settings</p>
 </a>
 </nav>
 </div>
-<!-- Bottom Actions -->
-<div class="flex flex-col gap-2 border-t border-border-light dark:border-border-dark pt-4">
-<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/10 transition-colors group" href="">
-<span class="material-symbols-outlined text-text-muted group-hover:text-red-500 transition-colors">logout</span>
-<span class="text-text-main dark:text-gray-300 text-sm font-medium group-hover:text-red-500 transition-colors">Log Out</span>
-</a>
+<!-- Bottom Action -->
+<div class="flex flex-col gap-4">
+<div class="p-4 rounded-xl bg-gradient-to-br from-primary/10 to-primary/5 border border-primary/20">
+<p class="text-xs font-medium text-text-main dark:text-gray-300 mb-2">Need help hosting?</p>
+<button class="text-primary text-xs font-bold flex items-center gap-1 hover:underline">
+                        Contact Support <span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+</button>
+</div>
+<a href="/views/host/createRental.view.php" class="flex w-full cursor-pointer items-center justify-center overflow-hidden rounded-xl h-11 px-4 bg-primary hover:bg-primary-dark text-white shadow-md shadow-primary/30 transition-all active:scale-[0.98]">
+<span class="material-symbols-outlined mr-2 text-[20px]">add_business</span>
+<span class="text-sm font-bold tracking-wide">Create Rental</span>
+      </a>
 </div>
 </div>
 </aside>
@@ -135,11 +144,37 @@ session_start();
 <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
 <div class="bg-surface-light dark:bg-surface-dark rounded-xl p-6 border border-border-light dark:border-border-dark shadow-sm flex flex-col gap-3">
 <div class="flex items-center justify-between">
+    <?php
+    $pdo=Database::getConnection();
+    $stmt = $pdo->prepare("SELECT COUNT(*) FROM rentals WHERE id_host = ?");
+$stmt->execute([$HOST]);
+$totalProperties = $stmt->fetchColumn();
+
+$stmt = $pdo->prepare("
+    SELECT 
+        (SUM(isActive = 1) / COUNT(*)) * 100 AS occupancy
+    FROM rentals
+    WHERE id_host = ?
+");
+$stmt->execute([$HOST]);
+$occupancyRate = round($stmt->fetchColumn());
+
+$stmt = $pdo->prepare("
+    SELECT COUNT(*) 
+    FROM rentals 
+    WHERE id_host = ? AND isActive = 0
+");
+$stmt->execute([$HOST]);
+$pending = $stmt->fetchColumn();
+
+
+
+?>
 <p class="text-text-muted text-sm font-medium uppercase tracking-wider">Total Properties</p>
 <span class="material-symbols-outlined text-primary bg-primary/10 p-1.5 rounded-md">home_work</span>
 </div>
 <div class="flex items-end gap-3">
-<h2 class="text-3xl font-bold text-text-main dark:text-white">1,240</h2>
+<h2 class="text-3xl font-bold text-text-main dark:text-white"><?= $totalProperties  ?> </h2>
 <span class="flex items-center text-green-600 text-xs font-bold mb-1.5 bg-green-100 dark:bg-green-900/30 px-1.5 py-0.5 rounded">
 <span class="material-symbols-outlined text-[14px] mr-0.5">trending_up</span>
                                     +5.2%
@@ -152,7 +187,8 @@ session_start();
 <span class="material-symbols-outlined text-primary bg-primary/10 p-1.5 rounded-md">bed</span>
 </div>
 <div class="flex items-end gap-3">
-<h2 class="text-3xl font-bold text-text-main dark:text-white">78%</h2>
+<h2 class="text-3xl font-bold text-text-main dark:text-white"><?= $occupancyRate ?>%
+</h2>
 <span class="flex items-center text-green-600 text-xs font-bold mb-1.5 bg-green-100 dark:bg-green-900/30 px-1.5 py-0.5 rounded">
 <span class="material-symbols-outlined text-[14px] mr-0.5">trending_up</span>
                                     +2.1%
@@ -165,7 +201,7 @@ session_start();
 <span class="material-symbols-outlined text-amber-500 bg-amber-500/10 p-1.5 rounded-md">pending_actions</span>
 </div>
 <div class="flex items-end gap-3">
-<h2 class="text-3xl font-bold text-text-main dark:text-white">12</h2>
+<h2 class="text-3xl font-bold text-text-main dark:text-white"><?= $pending ?></h2>
 <span class="flex items-center text-red-500 text-xs font-bold mb-1.5 bg-red-100 dark:bg-red-900/30 px-1.5 py-0.5 rounded">
 <span class="material-symbols-outlined text-[14px] mr-0.5">trending_down</span>
                                     -3.4%
@@ -220,32 +256,38 @@ session_start();
 <tbody class="divide-y divide-border-light dark:divide-border-dark">
 <?php 
 $pdo = Database::getConnection();
-$HOST = $_SESSION['user']->getId();
+
 
 $stmt = $pdo->prepare("SELECT * FROM rentals WHERE id_host = ?");
 $stmt->execute([$HOST]);
 
 $rentals = $stmt->fetchAll(PDO::FETCH_ASSOC);
-$host= $_SESSION['user'];
+
 foreach ($rentals as $rental) {
+    $statusClass = $rental['isActive'] ? 
+        'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300' : 
+        'bg-gray-100 text-gray-800 dark:bg-gray-700/50 dark:text-gray-300';
+
+    $statusDot = $rental['isActive'] ? 'bg-green-500' : 'bg-gray-400';
+    $statusText = $rental['isActive'] ? 'Active' : 'Inactive';
     
     echo "
 <tr class='group hover:bg-gray-50 dark:hover:bg-neutral-800/50 transition-colors'>
 <td class='py-4 px-6'>
+<div class='flex items-center gap-4'>
 <div class='w-16 h-12 rounded-lg bg-cover bg-center shrink-0 border shadow-sm'
      style=\"background-image: url('/public/uploads/" . htmlspecialchars($rental['cover_image']) . "');\">
 </div>
-
-
 <div class='flex flex-col'>
-<span class='font-bold text-sm'>Rental #{$rental['id']}</span>
-<span class='text-xs text-gray-500'>{$rental['title']}</span>
+<span class='font-bold text-sm'> {$rental['title']}</span>
+<span class='text-xs text-gray-500'>ID: #{$rental['id']}</span>
 </div>
 </div>
 </td>
 <td class='py-4 px-6'>
 <div class='flex items-center gap-2'>
-<div class='w-6 h-6 rounded-full bg-cover bg-center shrink-0' data-alt='Profile picture of Mark Smith' style='background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDI7RAfUvonItboNddTqvaKI7Y8zrFcLE5LOfg1LFI1ypmMfj9v5MptkB5kqQBXueUSDAZLOSM2TvkOzYdecWqk2sUaJ1viYLCfXrh9fx28ThS9Y5afJ51qHTsa-02qDGOEtSFIgOmU1w_wI5X2Sidrox4B5k4co1OdlzmQu7Uoy5eWVLf47ACDYuTqSJzKFd5iYOAPk_tTBmydoAIZ19ojVzrOMZ-jjwfhTSShaC3Jvmp3k7E8jlb-P66cG_rR24dSsblBqvqhHxE');'></div>
+<div class='bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 ring-2 ring-primary/20' data-alt='Profile picture of the admin user' style='background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBxqzunylhYYuSVy-NAxAvqfxzNZsSWe1n6rMBF0d9LNC888i0xL11j9ReWnQW026riES0ZBJNlAehVlVoBAm5aOa5id0lYM9SION5Ihh3hfK1geyWxho93upxo6kRIRbR0KPO1CMwi6sI4gqLBkQ9ULujMyeGBraxwApa9O7SMx-c1_rbphC8Fj3vUbelPOYkRcsaqi7dbkUR2GKT7_g-t8youdkQemLQ78sUMPTxiUi25SnLqYShOiiIU2q08FU4F3qC3gCFAskk');'>
+</div>
 <span class='text-sm font-medium text-text-main dark:text-gray-300'>$host->name</span>
 </div>
 </td>
@@ -258,11 +300,61 @@ foreach ($rentals as $rental) {
 <span class='text-xs text-gray-400'>/night</span>
 </span>
 </td>
-</tr>";
+<td class='py-4 px-6'>
+    <span class='inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium {$statusClass}'>
+        <span class='w-1.5 h-1.5 {$statusDot} rounded-full mr-1.5'></span>
+        {$statusText}
+    </span>
+</td>
+<td class='py-4 px-6 text-right'>
+    <div class='flex items-center justify-end gap-2'>
+
+        <!-- Modifier -->
+      
+<button
+onclick='openEditModal(
+    {$rental['id']},
+    \"".addslashes($rental['title'])."\",
+    \"".addslashes($rental['city'])."\",
+    {$rental['pricePerNight']}
+)'
+class='flex items-center gap-1 px-3 py-1.5 rounded-md 
+       bg-blue-100 text-blue-700 
+       hover:bg-blue-200 
+       dark:bg-blue-900/30 dark:text-blue-300 dark:hover:bg-blue-900/50
+       transition-colors text-xs font-semibold'>
+<span class='material-symbols-outlined text-[16px]'>edit</span>
+Modifier
+</button>;
+
+
+        <!-- Supprimer -->
+        <form action='/Controllers/RentalController.php' 
+              method='POST'
+              onsubmit='return confirm('Voulez-vous vraiment supprimer cette location ?');'>
+              
+            <input type='hidden' name='id' value='{$rental['id']}'>
+
+            <button type='submit'
+                class='flex items-center gap-1 px-3 py-1.5 rounded-md 
+                       bg-red-100 text-red-700 
+                       hover:bg-red-200 
+                       dark:bg-red-900/30 dark:text-red-300 dark:hover:bg-red-900/50
+                       transition-colors text-xs font-semibold' name='deleteRental'>
+                <span class='material-symbols-outlined text-[16px]' >delete</span>
+                Supprimer
+            </button>
+        </form>
+
+    </div>
+</td>
+
+</tr>
+ ";
 }
 ?>
-</tbody>
-<!-- 
+
+<!--  1 3 2 2 1
  Row 2 
 <tr class="group hover:bg-gray-50 dark:hover:bg-neutral-800/50 transition-colors">
 <td class="py-4 px-6">
@@ -295,146 +387,115 @@ foreach ($rentals as $rental) {
 <td class="py-4 px-6 text-right">
 <div class="flex items-center justify-end gap-2">
  Switch Inactive -->
-<button aria-checked="false" class="relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none bg-gray-200 dark:bg-gray-600" role="switch">
-<span class="translate-x-0 pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out"></span>
-</button>
-<button class="p-1 rounded-md hover:bg-gray-200 dark:hover:bg-neutral-700 text-text-muted hover:text-text-main transition-colors">
-<span class="material-symbols-outlined text-[20px]">more_vert</span>
-</button>
-</div>
-</td>
-</tr>
-<!-- Row 3 -->
-<tr class="group hover:bg-gray-50 dark:hover:bg-neutral-800/50 transition-colors">
-<td class="py-4 px-6">
-<div class="flex items-center gap-4">
-<div class="w-16 h-12 rounded-lg bg-cover bg-center shrink-0 border border-border-light dark:border-border-dark shadow-sm" data-alt="Rustic mountain cabin surrounded by forest" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuC3a5PdQP4GsRs_KND30quLTE1UVudvMC2haVMLvCiWADm72AVO8eo9RzfgJguv3GHm28puQH1ZCBayQ421-FuyKzgEBKSlt0V83pzsjGb9Ox_-uSpsx2dOa_VsdwWdk4ZCI8qFUpN04QCutt2W2Jro0znO63svVd2CKm6637GhCf8Aosf6NAyVbQora7qccFNkjnJ9xvObg5aaXRQuoSX88cuLz8ns1hlUtO94D2xj1RZLLc9GZynFDIaUGeTQxuNLRNFFoPNLqi4');"></div>
-<div class="flex flex-col">
-<span class="font-bold text-text-main dark:text-white text-sm line-clamp-1">Mountain Retreat Cabin</span>
-<span class="text-xs text-text-muted">ID: #R-1033</span>
-</div>
-</div>
-</td>
-<td class="py-4 px-6">
-<div class="flex items-center gap-2">
-<div class="w-6 h-6 rounded-full bg-cover bg-center shrink-0" data-alt="Profile picture of Sarah Jenkins" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBiSgZxiIZTf-JMmbncPjVlkNSpkQ1csYZT0La0tXvov6KCO-ZAnjIlwNc5xwcRkLnZ3JmKF3QeoUalzWYMcSsVGk2y4mmJbThNY8QpX5vOzhHVG9MWPMaXVENKOqRrZ7FKC5MPzA6tXJ7Gc-PS796auQ__Z4fH_0n-9mHaUij-BrLEPMzHqjVbghAmQJqcltieo2kWJApx4690bW25JCQhcET-Em43EiU3YuewEiRTde4Eno5a0t4a5IA7U7pHQk7YQkBhDjflioM');"></div>
-<span class="text-sm font-medium text-text-main dark:text-gray-300">Sarah Jenkins</span>
-</div>
-</td>
-<td class="py-4 px-6">
-<span class="text-sm text-text-main dark:text-gray-300">Denver, CO</span>
-</td>
-<td class="py-4 px-6">
-<span class="text-sm font-bold text-text-main dark:text-gray-200">$220<span class="text-text-muted font-normal text-xs">/night</span></span>
-</td>
-<td class="py-4 px-6">
-<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-300">
-<span class="w-1.5 h-1.5 bg-amber-500 rounded-full mr-1.5"></span>
-                                                Pending
-                                            </span>
-</td>
-<td class="py-4 px-6 text-right">
-<div class="flex items-center justify-end gap-2">
-<button class="flex items-center gap-1 px-2.5 py-1 rounded-md bg-primary/10 text-primary hover:bg-primary/20 transition-colors text-xs font-bold">
-                                                    Review
-                                                </button>
-<button class="p-1 rounded-md hover:bg-gray-200 dark:hover:bg-neutral-700 text-text-muted hover:text-text-main transition-colors">
-<span class="material-symbols-outlined text-[20px]">more_vert</span>
-</button>
-</div>
-</td>
-</tr>
-<!-- Row 4 -->
-<tr class="group hover:bg-gray-50 dark:hover:bg-neutral-800/50 transition-colors">
-<td class="py-4 px-6">
-<div class="flex items-center gap-4">
-<div class="w-16 h-12 rounded-lg bg-cover bg-center shrink-0 border border-border-light dark:border-border-dark shadow-sm" data-alt="Modern apartment interior with city view" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBY3Ruxu5SGTvEKUHfOmiBVbltz6_XaYJVT9DZoUFIeED0wC70pzwbopiw1oZjImmvGhJrDeNSflhDG0zgDvxd17SVvX_u-iUf7xtONnpPw076Q0ubFEzqWwSLIP2-xpJfqNCLbM-uheMYuMVSrfpYayiJCGbEikYTRxzHOFTf6ym7QSfipU6ZFvV9KmDIq0jc5MS5FJvej_4SMREtw2vR2i3woRLFDAm9bqB4IVOqRS9NflRhpVBjhBOC_FrSxf4IVfipF0--H1ks');"></div>
-<div class="flex flex-col">
-<span class="font-bold text-text-main dark:text-white text-sm line-clamp-1">Sunny Mission District Flat</span>
-<span class="text-xs text-text-muted">ID: #R-1042</span>
-</div>
-</div>
-</td>
-<td class="py-4 px-6">
-<div class="flex items-center gap-2">
-<div class="w-6 h-6 rounded-full bg-cover bg-center shrink-0" data-alt="Profile picture of David Chen" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCbAzG2K8O1A5DT4815dKP60d-P3MhfIf11vaq3MGyCcNxX7EKoXt2vJD5nEozULCA_f5IbuK0vRP18ik87KpGOXRSFUN5PjHgMz5vEKrQu4vaX8VbzDZUcP_kqGFrbhxE-ZvFcg5Ml2jCi8k-wO770yQbLm609cjhngFMSupxpSykpZspSgOpdJk-kJMpCpuhz42n-dOkSqVprM3E0ew71etZJQjrtuZ0sL4v9dwJhbXho9tQRjDxzEi1EooTh7MB-k19Y_xX3pHo');"></div>
-<span class="text-sm font-medium text-text-main dark:text-gray-300">David Chen</span>
-</div>
-</td>
-<td class="py-4 px-6">
-<span class="text-sm text-text-main dark:text-gray-300">San Francisco, CA</span>
-</td>
-<td class="py-4 px-6">
-<span class="text-sm font-bold text-text-main dark:text-gray-200">$310<span class="text-text-muted font-normal text-xs">/night</span></span>
-</td>
-<td class="py-4 px-6">
-<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300">
-<span class="w-1.5 h-1.5 bg-green-500 rounded-full mr-1.5"></span>
-                                                Active
-                                            </span>
-</td>
-<td class="py-4 px-6 text-right">
-<div class="flex items-center justify-end gap-2">
-<button aria-checked="true" class="relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none bg-primary" role="switch">
-<span class="translate-x-5 pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out"></span>
-</button>
-<button class="p-1 rounded-md hover:bg-gray-200 dark:hover:bg-neutral-700 text-text-muted hover:text-text-main transition-colors">
-<span class="material-symbols-outlined text-[20px]">more_vert</span>
-</button>
-</div>
-</td>
-</tr>
-<!-- Row 5 -->
-<tr class="group hover:bg-gray-50 dark:hover:bg-neutral-800/50 transition-colors">
-<td class="py-4 px-6">
-<div class="flex items-center gap-4">
-<div class="w-16 h-12 rounded-lg bg-cover bg-center shrink-0 border border-border-light dark:border-border-dark shadow-sm" data-alt="Small minimalistic bedroom in Tokyo" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuC6_mbrwH0cJ4dem98mWHYpqFZx-5eWvnzGh6Ro6bLodXltI6v0oqdX7Qfo92xku_5loyS30sy2ZjFZan1tOmsy6zEE-vaXA-eyVyQFHsKT36QFaNpZPaHMSqtTLwBwP94ZQUlYky4vIwANwX2jxTJ-4vbNqoY8cNE_iKYnMjRFLX2MXnUOMNiTFfq0nYUeMgzw4feEmD29jsyIwSxaw8w07d5FBMsycnf7VFre5bBhTfOsUwE5SjUTOSjrWAvfn6z0fZhD_RN1EIw');"></div>
-<div class="flex flex-col">
-<span class="font-bold text-text-main dark:text-white text-sm line-clamp-1">Minimalist Studio Tokyo</span>
-<span class="text-xs text-text-muted">ID: #R-1088</span>
-</div>
-</div>
-</td>
-<td class="py-4 px-6">
-<div class="flex items-center gap-2">
-<div class="w-6 h-6 rounded-full bg-cover bg-center shrink-0" data-alt="Profile picture of Yumi Tanaka" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDlzDYSwEC5buBebHtYHVFpPlMIp0pPcyO0tvCbRKDpcOMUc5vtbDeGSnmbhTYnjDoRVI70D4RMGBW25meaAHbP0Ao6erjJ-IdsHBRvHP4Tun5OzWNMiqoxPZ6WTBubFFkumiTIUNTHzOqFAKUk_fi1jKGoMzqN2NkM7MHVC-jMSl52WBg9mxgJ6h7u5SOUlUtOpj0wGwnUslUndePITMb8-6_WjfaXVXIyk5w3ncgo3ghX8rVNiNqw2-WuSM1Z-FhQmNDSQsmKbkU');"></div>
-<span class="text-sm font-medium text-text-main dark:text-gray-300">Yumi Tanaka</span>
-</div>
-</td>
-<td class="py-4 px-6">
-<span class="text-sm text-text-main dark:text-gray-300">Tokyo, JP</span>
-</td>
-<td class="py-4 px-6">
-<span class="text-sm font-bold text-text-main dark:text-gray-200">$120<span class="text-text-muted font-normal text-xs">/night</span></span>
-</td>
-<td class="py-4 px-6">
-<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300">
-<span class="w-1.5 h-1.5 bg-red-500 rounded-full mr-1.5"></span>
-                                                Suspended
-                                            </span>
-</td>
-<td class="py-4 px-6 text-right">
-<div class="flex items-center justify-end gap-2">
-<button aria-checked="false" class="relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none bg-gray-200 dark:bg-gray-600 opacity-50 cursor-not-allowed" disabled="" role="switch">
-<span class="translate-x-0 pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out"></span>
-</button>
-<button class="p-1 rounded-md hover:bg-gray-200 dark:hover:bg-neutral-700 text-text-muted hover:text-text-main transition-colors">
-<span class="material-symbols-outlined text-[20px]">more_vert</span>
-</button>
-</div>
-</td>
+
 </tr>
 </tbody> 
 </table>
+
+<!-- Edit Rental Modal -->
+<div id="editModal"
+     class="fixed inset-0 bg-black/40 hidden items-center justify-center z-50">
+
+    <div class="w-full max-w-xl bg-white dark:bg-[#1c1716] 
+                rounded-2xl shadow-xl border border-[#e2dfdf] dark:border-[#444]">
+
+        <!-- Header -->
+        <div class="flex items-center justify-between px-6 py-4 
+                    border-b border-[#e2dfdf] dark:border-[#444]">
+            <h3 class="text-lg font-bold text-[#161313] dark:text-white">
+                Modifier la location
+            </h3>
+            <button onclick="closeEditModal()"
+                    class="text-gray-400 hover:text-red-500 transition">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+        </div>
+
+        <!-- Form -->
+        <form action="/Controllers/RentalController.php" method="POST"
+              class="p-6 flex flex-col gap-5">
+
+            <input type="hidden" name="updateRental" value="1">
+            <input type="hidden" name="id" id="edit-id">
+
+            <!-- Title -->
+            <div class="flex flex-col gap-1">
+                <label class="text-sm font-semibold text-[#161313] dark:text-white">
+                    Titre
+                </label>
+                <input type="text" name="title" id="edit-title"
+                       class="w-full px-4 py-2 rounded-xl
+                              bg-[#fafafa] dark:bg-[#2a2422]
+                              border border-[#e2dfdf] dark:border-[#444]
+                              text-sm text-[#161313] dark:text-white
+                              focus:outline-none focus:ring-2 focus:ring-primary">
+            </div>
+
+            <!-- City -->
+            <div class="flex flex-col gap-1">
+                <label class="text-sm font-semibold text-[#161313] dark:text-white">
+                    Ville
+                </label>
+                <input type="text" name="city" id="edit-city"
+                       class="w-full px-4 py-2 rounded-xl
+                              bg-[#fafafa] dark:bg-[#2a2422]
+                              border border-[#e2dfdf] dark:border-[#444]
+                              text-sm text-[#161313] dark:text-white
+                              focus:outline-none focus:ring-2 focus:ring-primary">
+            </div>
+
+            <!-- Price -->
+            <div class="flex flex-col gap-1">
+                <label class="text-sm font-semibold text-[#161313] dark:text-white">
+                    Prix / nuit (DH)
+                </label>
+                <input type="number" name="price" id="edit-price"
+                       class="w-full px-4 py-2 rounded-xl
+                              bg-[#fafafa] dark:bg-[#2a2422]
+                              border border-[#e2dfdf] dark:border-[#444]
+                              text-sm text-[#161313] dark:text-white
+                              focus:outline-none focus:ring-2 focus:ring-primary">
+            </div>
+
+            <!-- Actions -->
+            <div class="flex justify-end gap-3 pt-4">
+                <button type="button" onclick="closeEditModal()"
+                        class="px-5 py-2 rounded-xl
+                               border border-[#e2dfdf] dark:border-[#444]
+                               text-sm font-semibold
+                               text-[#161313] dark:text-white
+                               hover:bg-gray-50 dark:hover:bg-neutral-800/50">
+                    Annuler
+                </button>
+
+                <button type="submit"
+                        class="px-6 py-2 rounded-xl
+                               bg-primary text-white
+                               text-sm font-bold
+                               hover:opacity-90 transition">
+                    Enregistrer
+                </button>
+            </div>
+        </form>
+    </div>
 </div>
-<!-- Pagination -->
-<div class="border-t border-border-light dark:border-border-dark p-4 flex items-center justify-between bg-surface-light dark:bg-surface-dark">
-<span class="text-xs text-text-muted font-medium">Showing <span class="text-text-main dark:text-white font-bold">1-5</span> of <span class="text-text-main dark:text-white font-bold">128</span> rentals</span>
-<div class="flex gap-2">
-<button class="px-3 py-1.5 rounded-lg border border-border-light dark:border-border-dark text-text-main dark:text-gray-300 text-xs font-medium hover:bg-background-light dark:hover:bg-background-dark/50 disabled:opacity-50 transition-colors" disabled="">Previous</button>
-<button class="px-3 py-1.5 rounded-lg border border-border-light dark:border-border-dark text-text-main dark:text-gray-300 text-xs font-medium hover:bg-background-light dark:hover:bg-background-dark/50 transition-colors">Next</button>
-</div>
-</div>
+<script>
+function openEditModal(id, title, city, price) {
+    document.getElementById('edit-id').value = id;
+    document.getElementById('edit-title').value = title;
+    document.getElementById('edit-city').value = city;
+    document.getElementById('edit-price').value = price;
+
+    document.getElementById('editModal').classList.remove('hidden');
+    document.getElementById('editModal').classList.add('flex');
+}
+
+function closeEditModal() {
+    document.getElementById('editModal').classList.add('hidden');
+    document.getElementById('editModal').classList.remove('flex');
+}
+</script>
+
 </div>
 </div>
 </div>

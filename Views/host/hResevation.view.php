@@ -31,37 +31,68 @@
         }
     </script>
 </head>
-<body class="bg-background-light dark:bg-background-dark font-display text-text-main antialiased min-h-screen flex flex-col overflow-x-hidden">
+<body class="flex h-screen overflow-hidden bg-background-light dark:bg-background-dark">
 <!-- Top Navigation -->
 <header class="sticky top-0 z-50 bg-white/80 dark:bg-[#1c1716]/90 backdrop-blur-md border-b border-[#ebdcd9] dark:border-[#332a29] px-6 py-3">
 <div class="max-w-7xl mx-auto flex items-center justify-between gap-4">
-<!-- Logo Section -->
-<div class="flex items-center gap-4">
-<div class="text-primary">
-<span class="material-symbols-outlined text-4xl">holiday_village</span>
-</div>
-<h1 class="text-text-main dark:text-white text-xl font-bold tracking-tight hidden sm:block">Host Dashboard</h1>
-</div>
-<!-- Search Bar -->
-<div class="flex-1 max-w-md hidden md:block">
-<div class="relative group">
-<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-<span class="material-symbols-outlined text-gray-400">search</span>
-</div>
-<input class="block w-full pl-10 pr-3 py-2 border-none rounded-xl bg-[#f3f2f1] dark:bg-[#2a2423] text-text-main dark:text-gray-200 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all" placeholder="Search reservations, guests, or listings..." type="text"/>
-</div>
-</div>
+
 <!-- Right Nav Actions -->
 <div class="flex items-center gap-6">
-<nav class="hidden lg:flex items-center gap-6">
-<a class="text-text-main dark:text-gray-300 font-medium hover:text-primary transition-colors text-sm" href="/Views/host/hDashboard.view.php">Dashboard</a>
-<a class="text-text-main dark:text-gray-300 font-medium hover:text-primary transition-colors text-sm relative" href="/Views/host/hResevation.view.php">
-                        Bookings
-                        <span class="absolute -top-1 -right-2 bg-primary text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full">2</span>
+<!-- Sidebar -->
+
+<aside class="w-64 bg-background-card dark:bg-[#2a2423] border-r border-[#e6e2de] dark:border-[#3a3433] flex-shrink-0 flex flex-col h-screen fixed left-0 top-0 z-10 shadow-soft transition-all duration-300">
+<div class="p-6 flex flex-col h-full justify-between">
+<div class="flex flex-col gap-8">
+<!-- Branding / Profile -->
+<div class="flex items-center gap-3">
+<div class="bg-center bg-no-repeat bg-cover rounded-full size-12 shadow-sm border-2 border-white dark:border-[#3a3433]" data-alt="Portrait of Sarah Jenkins smiling warmly" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuD9nkFOQKkZNmaYrHGTqjylCInk8b3xMuonBq_aCtGnpqR8oMMbVpseYMHS1goBu4-NUsroncZC6UPFKrpaWIEEKPugGKLrROWxlIggHkcTwO69yyCqOlzwI085FYQFSuxX0dORKTqhmp3xH7zt_0-lNLlTSSkNriIFE-rZi424-OuTcAOh8Po_rXG3WQ5pxRg5bPf1XPNOP-BvoD6oQqgbJKIKXTGlatDsntIURcALopdf8nwKS3bbTfcQQrNiwSxB3msx2Lp1Ico");'></div>
+<div class="flex flex-col">
+<h1 class="text-text-main dark:text-gray-100 text-base font-bold leading-tight">Sarah Jenkins</h1>
+<p class="text-[#9CA3AF] text-xs font-medium uppercase tracking-wide">Superhost</p>
+</div>
+</div>
+<!-- Navigation -->
+<nav class="flex flex-col gap-2">
+<a class="sidebar-item group flex items-center gap-3 px-4 py-3 rounded-xl bg-primary/10 text-primary dark:text-primary-dark transition-colors" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<p class="text-sm font-semibold">Dashboard</p>
 </a>
-<a class="text-text-main dark:text-gray-300 font-medium hover:text-primary transition-colors text-sm" href="/Views/host/Rentals.view.php">Rentals</a>
-<a class="text-text-main dark:text-gray-300 font-medium hover:text-primary transition-colors text-sm" href="/Views/host/hReview.view.php">Reviews</a>
+<a class="sidebar-item group flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-[#f3f2f1] dark:hover:bg-[#3a3433] text-text-main dark:text-gray-300 transition-colors" href="/Views/host/Rentals.view.php">
+<span class="material-symbols-outlined">real_estate_agent</span>
+<p class="text-sm font-medium">My Rentals</p>
+</a>
+<a class="sidebar-item group flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-[#f3f2f1] dark:hover:bg-[#3a3433] text-text-main dark:text-gray-300 transition-colors" href="/Views/host/hResevation.view.php">
+<span class="material-symbols-outlined">calendar_month</span>
+<p class="text-sm font-medium">Reservations</p>
+</a>
+<a class="sidebar-item group flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-[#f3f2f1] dark:hover:bg-[#3a3433] text-text-main dark:text-gray-300 transition-colors" href="/Views/host/hReview.view.php">
+<span class="material-symbols-outlined">reviews</span>
+<p class="text-sm font-medium">Reviews</p>
+</a>
+
+<a class="sidebar-item group flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-[#f3f2f1] dark:hover:bg-[#3a3433] text-text-main dark:text-gray-300 transition-colors" href="#">
+<span class="material-symbols-outlined">settings</span>
+<p class="text-sm font-medium">Settings</p>
+</a>
 </nav>
+</div>
+<!-- Bottom Action -->
+<div class="flex flex-col gap-4">
+<div class="p-4 rounded-xl bg-gradient-to-br from-primary/10 to-primary/5 border border-primary/20">
+<p class="text-xs font-medium text-text-main dark:text-gray-300 mb-2">Need help hosting?</p>
+<button class="text-primary text-xs font-bold flex items-center gap-1 hover:underline">
+                        Contact Support <span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+</button>
+</div>
+<a href="/views/host/createRental.view.php" class="flex w-full cursor-pointer items-center justify-center overflow-hidden rounded-xl h-11 px-4 bg-primary hover:bg-primary-dark text-white shadow-md shadow-primary/30 transition-all active:scale-[0.98]">
+<span class="material-symbols-outlined mr-2 text-[20px]">add_business</span>
+<span class="text-sm font-bold tracking-wide">Create Rental</span>
+      </a>
+</div>
+</div>
+</aside>
+</div>
+<div>
 <div class="flex items-center gap-3 pl-4 border-l border-gray-200 dark:border-gray-700">
 <button class="relative rounded-full hover:bg-gray-100 dark:hover:bg-[#2a2423] p-1 transition-colors">
 <span class="material-symbols-outlined text-text-main dark:text-gray-300">notifications</span>
@@ -74,7 +105,8 @@
 </div>
 </header>
 <!-- Main Content -->
-<main class="flex-grow w-full max-w-7xl mx-auto px-4 sm:px-6 py-8">
+<main class="flex-grow ml-64 w-full max-w-7xl mx-auto px-4 sm:px-6 py-8 overflow-y-auto h-screen">
+
 <!-- Page Header -->
 <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
 <div>
@@ -89,7 +121,7 @@
 </div>
 </div>
 <!-- KPI Stats -->
-<div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-10">
+<div class="grid grid-cols-1 l  sm:grid-cols-3 gap-4 mb-10">
 <div class="flex flex-col gap-1 p-6 rounded-xl bg-card-light dark:bg-[#2a2423] shadow-sm hover:shadow-md transition-shadow border border-transparent hover:border-primary/20">
 <div class="flex items-center justify-between">
 <p class="text-[#7c706e] dark:text-gray-400 text-sm font-medium">Pending Requests</p>
@@ -369,5 +401,7 @@
                 <span class="material-symbols-outlined">expand_more</span>
 </button>
 </div>
+
 </main>
+</div>
 </body></html>
