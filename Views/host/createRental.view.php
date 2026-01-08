@@ -61,7 +61,7 @@
 </div>
 <div class="flex flex-1 justify-end gap-8 items-center">
 <div class="hidden md:flex items-center gap-6">
-<a class="text-[#585453] dark:text-[#a1a1aa] hover:text-primary transition-colors text-sm font-medium" href="/Views/host/hDashboard.php">Dashboard</a>
+<a class="text-[#585453] dark:text-[#a1a1aa] hover:text-primary transition-colors text-sm font-medium" href="/Views/host/hDashboard.view.php">Dashboard</a>
 <a class="text-[#161313] dark:text-white text-sm font-medium" href="/Views/host/Rentals.view.php">Listings</a>
 <a class="text-[#585453] dark:text-[#a1a1aa] hover:text-primary transition-colors text-sm font-medium" href="/Views/host/hReview.view.php">Inbox</a>
 <a class="text-[#585453] dark:text-[#a1a1aa] hover:text-primary transition-colors text-sm font-medium" href="/Views/host/hResevation.view.php">Bookings</a>

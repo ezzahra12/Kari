@@ -1,3 +1,14 @@
+<?php
+
+require_once __DIR__ . '/../../models/Host.php';  
+require_once __DIR__ . '/../../models/User.php';  
+require_once __DIR__ . '/../../models/database.php';
+session_start();
+$host = $_SESSION['user']; 
+$rentals = $host->getRentals(); 
+$topRentals = array_slice($rentals, 3, 3); 
+?>
+
 <!DOCTYPE html>
 
 <html class="light" lang="en"><head>
@@ -53,11 +64,12 @@
 <div class="p-6 flex flex-col h-full justify-between">
 <div class="flex flex-col gap-8">
 <!-- Branding / Profile -->
-<div class="flex items-center gap-3">
-<div class="bg-center bg-no-repeat bg-cover rounded-full size-12 shadow-sm border-2 border-white dark:border-[#3a3433]" data-alt="Portrait of Sarah Jenkins smiling warmly" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuD9nkFOQKkZNmaYrHGTqjylCInk8b3xMuonBq_aCtGnpqR8oMMbVpseYMHS1goBu4-NUsroncZC6UPFKrpaWIEEKPugGKLrROWxlIggHkcTwO69yyCqOlzwI085FYQFSuxX0dORKTqhmp3xH7zt_0-lNLlTSSkNriIFE-rZi424-OuTcAOh8Po_rXG3WQ5pxRg5bPf1XPNOP-BvoD6oQqgbJKIKXTGlatDsntIURcALopdf8nwKS3bbTfcQQrNiwSxB3msx2Lp1Ico");'></div>
+<div class="flex items-center gap-3 px-2">
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 ring-2 ring-primary/20" data-alt="Profile picture of the admin user" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBxqzunylhYYuSVy-NAxAvqfxzNZsSWe1n6rMBF0d9LNC888i0xL11j9ReWnQW026riES0ZBJNlAehVlVoBAm5aOa5id0lYM9SION5Ihh3hfK1geyWxho93upxo6kRIRbR0KPO1CMwi6sI4gqLBkQ9ULujMyeGBraxwApa9O7SMx-c1_rbphC8Fj3vUbelPOYkRcsaqi7dbkUR2GKT7_g-t8youdkQemLQ78sUMPTxiUi25SnLqYShOiiIU2q08FU4F3qC3gCFAskk");'>
+</div>
 <div class="flex flex-col">
-<h1 class="text-text-main dark:text-gray-100 text-base font-bold leading-tight">Sarah Jenkins</h1>
-<p class="text-[#9CA3AF] text-xs font-medium uppercase tracking-wide">Superhost</p>
+<h1 class="text-text-main dark:text-white text-base font-bold leading-tight"><?= htmlspecialchars($host->name) ?></h1>
+<p class="text-text-muted text-xs font-normal">Management Console</p>
 </div>
 </div>
 <!-- Navigation -->
@@ -176,123 +188,72 @@
 <!-- Properties List & Recent Activity -->
 <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
 <!-- My Rentals List (Takes up 2 cols) -->
-<div class="lg:col-span-2 flex flex-col gap-4">
-<div class="flex items-center justify-between">
-<h3 class="text-xl font-bold text-[#1c1716] dark:text-white">My Rentals</h3>
-<a class="text-primary text-sm font-semibold hover:underline" href="#">View All</a>
-</div>
+
 <!-- Rental Card 1 -->
-<div class="group flex flex-col sm:flex-row bg-white dark:bg-[#2a2423] rounded-2xl shadow-soft overflow-hidden hover:shadow-md transition-shadow border border-transparent hover:border-primary/20">
-<div class="sm:w-48 h-48 sm:h-auto bg-cover bg-center relative" data-alt="Interior of a modern loft apartment with brick walls and large windows" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuA2Wy2hDLtjsChneMqqpSUXYnADbezSsRaSGuvOMgRRjtc3_p86fHpvxXPpGX4BywgQoFjEjgqdpAd0pifmoQLPiYdneJM_q8YnCk_h_T96XG9NZrVlmyKQeBsvmgx7qSgwE0co1IXusv_6BqgZdqGbnTpnvi0pd7CBUKZtLJhdJgDl1m4FqFCGP2WINNWmKHjqi7rEfwLpxtqiPKfvdtzoZWupeC2AQUJ0ytJBrrIiTud8U7s_t-5_9zW4BRYKqyiDpMAVj-tOiZg");'>
-<div class="absolute top-2 left-2 px-2 py-1 bg-white/90 backdrop-blur-sm rounded text-xs font-bold text-gray-800 shadow-sm">
-                                4.9 <span class="text-orange-400">★</span>
+<div class="lg:col-span-2 flex flex-col gap-4">
+    <div class="flex items-center justify-between">
+        <h3 class="text-xl font-bold text-[#1c1716] dark:text-white">My Rentals</h3>
+        <a class="text-primary text-sm font-semibold hover:underline" href="#">View All</a>
+    </div>
+
+    <?php if (!empty($topRentals)): ?>
+        <?php foreach($topRentals as $rental): ?>
+        <div class="group flex flex-col sm:flex-row bg-white dark:bg-[#2a2423] rounded-2xl shadow-soft overflow-hidden hover:shadow-md transition-shadow border border-transparent hover:border-primary/20">
+           <div class="sm:w-48 h-48 sm:h-auto bg-cover bg-center relative" 
+     style="background-image: url('/public/uploads/<?= htmlspecialchars($rental['cover_image'] ?? 'default.jpg') ?>');">
+
+                <div class="absolute top-2 left-2 px-2 py-1 bg-white/90 backdrop-blur-sm rounded text-xs font-bold text-gray-800 shadow-sm">
+                    <?= htmlspecialchars($rental['rating'] ?? 'N/A') ?> <span class="text-orange-400">★</span>
+                </div>
+            </div>
+            <div class="p-5 flex flex-col justify-between flex-1">
+                <div class="flex justify-between items-start">
+                    <div>
+                       <span class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20 mb-2">
+    <?= htmlspecialchars($rental['isActive'] ? 'Active' : 'Inactive') ?>
+</span>
+
+                        <h4 class="text-lg font-bold text-[#1c1716] dark:text-white group-hover:text-primary transition-colors">
+                            <?= htmlspecialchars($rental['title'] ?? 'No Title') ?>
+                        </h4>
+                        <p class="text-[#7c706e] dark:text-gray-400 text-sm mt-1">
+                            <?= htmlspecialchars($rental['city'] ?? 'Unknown') ?>
+                        </p>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-lg font-bold text-[#1c1716] dark:text-white">
+                            $<?= htmlspecialchars($rental['pricePerNight'] ?? 0) ?>
+                        </p>
+                        <p class="text-[#7c706e] dark:text-gray-400 text-xs">/ night</p>
+                    </div>
+                </div>
+                <div class="flex items-center justify-between mt-4 pt-4 border-t border-gray-100 dark:border-gray-800">
+                    <div class="flex gap-4 text-sm text-[#585453] dark:text-gray-300">
+                        <div class="flex items-center gap-1">
+                            <span class="material-symbols-outlined text-[18px]">bed</span> 
+                            <?= htmlspecialchars($rental['bedrooms'] ?? 0) ?> Beds
+                        </div>
+                        <div class="flex items-center gap-1">
+                            <span class="material-symbols-outlined text-[18px]">group</span> 
+                            <?= htmlspecialchars($rental['guests'] ?? 0) ?> Guests
+                        </div>
+                    </div>
+                    <div class="flex gap-2">
+                        <a href="/Views/host/editRental.view.php?id=<?= htmlspecialchars($rental['id']) ?>" 
+                           class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg text-gray-500 transition-colors" 
+                           title="Edit">
+                            <span class="material-symbols-outlined text-[20px]">edit</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <?php endforeach; ?>
+    <?php else: ?>
+        <p class="text-gray-500 dark:text-gray-400 mt-4">You have no rentals yet.</p>
+    <?php endif; ?>
 </div>
-</div>
-<div class="p-5 flex flex-col justify-between flex-1">
-<div class="flex justify-between items-start">
-<div>
-<span class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20 mb-2">Active</span>
-<h4 class="text-lg font-bold text-[#1c1716] dark:text-white group-hover:text-primary transition-colors">Cozy Downtown Loft</h4>
-<p class="text-[#7c706e] dark:text-gray-400 text-sm mt-1">San Francisco, CA</p>
-</div>
-<div class="text-right">
-<p class="text-lg font-bold text-[#1c1716] dark:text-white">$120</p>
-<p class="text-[#7c706e] dark:text-gray-400 text-xs">/ night</p>
-</div>
-</div>
-<div class="flex items-center justify-between mt-4 pt-4 border-t border-gray-100 dark:border-gray-800">
-<div class="flex gap-4 text-sm text-[#585453] dark:text-gray-300">
-<div class="flex items-center gap-1">
-<span class="material-symbols-outlined text-[18px]">bed</span> 2 Beds
-                                    </div>
-<div class="flex items-center gap-1">
-<span class="material-symbols-outlined text-[18px]">group</span> 4 Guests
-                                    </div>
-</div>
-<div class="flex gap-2">
-<button class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg text-gray-500 transition-colors" title="Edit">
-<span class="material-symbols-outlined text-[20px]">edit</span>
-</button>
-<button class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg text-gray-500 transition-colors" title="Calendar">
-<span class="material-symbols-outlined text-[20px]">calendar_month</span>
-</button>
-</div>
-</div>
-</div>
-</div>
-<!-- Rental Card 2 -->
-<div class="group flex flex-col sm:flex-row bg-white dark:bg-[#2a2423] rounded-2xl shadow-soft overflow-hidden hover:shadow-md transition-shadow border border-transparent hover:border-primary/20">
-<div class="sm:w-48 h-48 sm:h-auto bg-cover bg-center relative" data-alt="Sunny seaside cottage exterior with a porch" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDwQZwguislp_8Cdzys9HC99wOlTxRpNiQZSOre2IQ0bZsdmEU45OBRvSW-CdFAnkQjZvW7BOn5bNsOeVlmEvZRcQ-j2ADQvus3qUy9vetxIhrJKHPmaTuIdt7YxYEktA1TYCumrC7fXpeYsKCJRbogmMzDAN5jXnoo7CU9NxX-Y60mv05Ksrlj4Wh5fE_nQTfGYLt6pFPU_n3C2jTp8QIpZnfxBejJQnXbj0b0YNUGOCKlbMqav8Ap1c_QkTLDWQPQKUZNbjPS92k");'>
-<div class="absolute top-2 left-2 px-2 py-1 bg-white/90 backdrop-blur-sm rounded text-xs font-bold text-gray-800 shadow-sm">
-                                4.8 <span class="text-orange-400">★</span>
-</div>
-</div>
-<div class="p-5 flex flex-col justify-between flex-1">
-<div class="flex justify-between items-start">
-<div>
-<span class="inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-xs font-medium text-blue-700 ring-1 ring-inset ring-blue-600/20 mb-2">Available Now</span>
-<h4 class="text-lg font-bold text-[#1c1716] dark:text-white group-hover:text-primary transition-colors">Seaside Cottage Retreat</h4>
-<p class="text-[#7c706e] dark:text-gray-400 text-sm mt-1">Monterey, CA</p>
-</div>
-<div class="text-right">
-<p class="text-lg font-bold text-[#1c1716] dark:text-white">$250</p>
-<p class="text-[#7c706e] dark:text-gray-400 text-xs">/ night</p>
-</div>
-</div>
-<div class="flex items-center justify-between mt-4 pt-4 border-t border-gray-100 dark:border-gray-800">
-<div class="flex gap-4 text-sm text-[#585453] dark:text-gray-300">
-<div class="flex items-center gap-1">
-<span class="material-symbols-outlined text-[18px]">bed</span> 3 Beds
-                                    </div>
-<div class="flex items-center gap-1">
-<span class="material-symbols-outlined text-[18px]">group</span> 6 Guests
-                                    </div>
-</div>
-<div class="flex gap-2">
-<button class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg text-gray-500 transition-colors" title="Edit">
-<span class="material-symbols-outlined text-[20px]">edit</span>
-</button>
-<button class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg text-gray-500 transition-colors" title="Calendar">
-<span class="material-symbols-outlined text-[20px]">calendar_month</span>
-</button>
-</div>
-</div>
-</div>
-</div>
-<!-- Rental Card 3 (Inactive) -->
-<div class="group flex flex-col sm:flex-row bg-white dark:bg-[#2a2423] rounded-2xl shadow-soft overflow-hidden hover:shadow-md transition-shadow opacity-75">
-<div class="sm:w-48 h-48 sm:h-auto bg-cover bg-center grayscale relative" data-alt="Modern cabin in the woods with glass front" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCanO1SMMOQkO9z7MGjw6ewkzBQSKeVLKl525J7BiLh6wT-4H2Ad7T8TJhu9ecsHoRBBgJXpXNdaP1pcPLihB4Pd6k5UG9ei-qu3IgBu3jwfZ3bWjm6qdU6WrlBS3MpwvkTe9invA__WjXr9JYd1AnCulokqHwW0NnziOMEl1e59zd5AAXeF21Xo9oDoUJZYGEK_aw-XiKZr4boOHSwlYMtMHUEU0U0hnXR50wDtny3mj1cdOvrv33GIX57QV662CyOJnfjKuURqFk");'>
-</div>
-<div class="p-5 flex flex-col justify-between flex-1">
-<div class="flex justify-between items-start">
-<div>
-<span class="inline-flex items-center rounded-md bg-gray-100 px-2 py-1 text-xs font-medium text-gray-600 ring-1 ring-inset ring-gray-500/10 mb-2">Maintenance</span>
-<h4 class="text-lg font-bold text-[#1c1716] dark:text-white">Forest Escape Cabin</h4>
-<p class="text-[#7c706e] dark:text-gray-400 text-sm mt-1">Tahoe, CA</p>
-</div>
-<div class="text-right">
-<p class="text-lg font-bold text-[#1c1716] dark:text-white">$190</p>
-<p class="text-[#7c706e] dark:text-gray-400 text-xs">/ night</p>
-</div>
-</div>
-<div class="flex items-center justify-between mt-4 pt-4 border-t border-gray-100 dark:border-gray-800">
-<div class="flex gap-4 text-sm text-[#585453] dark:text-gray-300">
-<div class="flex items-center gap-1">
-<span class="material-symbols-outlined text-[18px]">bed</span> 2 Beds
-                                    </div>
-<div class="flex items-center gap-1">
-<span class="material-symbols-outlined text-[18px]">group</span> 4 Guests
-                                    </div>
-</div>
-<div class="flex gap-2">
-<button class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg text-gray-500 transition-colors" title="Edit">
-<span class="material-symbols-outlined text-[20px]">edit</span>
-</button>
-</div>
-</div>
-</div>
-</div>
-</div>
+
 <!-- Right Sidebar: Recent Activity & Notifications -->
 <div class="flex flex-col gap-6">
 <!-- Recent Activity -->
@@ -369,6 +330,13 @@
 </div>
 </div>
 </div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
 </div>
 </main>
 </body></html>
