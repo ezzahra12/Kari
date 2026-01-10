@@ -1,3 +1,23 @@
+<?php
+require __DIR__ . '/../models/database.php';
+require __DIR__ . '/../models/User.php';
+require __DIR__ . '/../models/Host.php';
+require __DIR__ . '/../models/Rental.php';
+session_start();
+
+// echo '<pre>';
+// print_r($_SESSION);
+// echo '</pre>';
+// die("x");
+
+if (!isset($_SESSION['user']) || !($_SESSION['user'] instanceof Host)) {
+    header("Location: /Views/auth/login.view.php");
+    exit;
+}
+
+$host = $_SESSION['user'];
+$rentals = $host->getRentals(); 
+?>
 <!DOCTYPE html>
 
 <html class="light" lang="en"><head>
@@ -79,72 +99,62 @@
 </div>
 </div>
 </div>
-</header>
-<!-- Filter Bar -->
-<section class="bg-white dark:bg-background-dark border-b border-[#f3f2f1] dark:border-gray-800 py-4 shadow-soft sticky top-20 z-40">
-<div class="max-w-[1440px] mx-auto px-6 md:px-10">
-<div class="flex flex-col lg:flex-row lg:items-center gap-4 lg:gap-6">
-<!-- Location -->
-<div class="flex-1 min-w-[200px]">
-<div class="flex w-full items-center rounded-full border border-[#e2dfdf] dark:border-gray-700 bg-white dark:bg-gray-800 h-12 px-4 shadow-sm focus-within:ring-2 focus-within:ring-primary focus-within:border-transparent transition-all">
-<span class="material-symbols-outlined text-text-main dark:text-gray-400 mr-3">search</span>
-<input class="w-full bg-transparent border-none p-0 text-text-dark dark:text-white text-sm font-medium placeholder:text-[#7c706e] focus:ring-0" placeholder="Where are you going?" value="New York, NY"/>
-</div>
-</div>
-<!-- Dates -->
-<div class="flex flex-1 items-center gap-2 min-w-[280px]">
-<div class="flex-1 flex items-center rounded-full border border-[#e2dfdf] dark:border-gray-700 bg-white dark:bg-gray-800 h-12 px-4 shadow-sm hover:border-primary/50 cursor-pointer">
-<span class="material-symbols-outlined text-text-main dark:text-gray-400 mr-2 text-[20px]">calendar_today</span>
-<div class="flex flex-col justify-center">
-<span class="text-[10px] uppercase font-bold text-text-main leading-none mb-0.5">Check-in</span>
-<span class="text-text-dark dark:text-white text-xs font-medium leading-none">Sept 15</span>
-</div>
-</div>
-<div class="flex-1 flex items-center rounded-full border border-[#e2dfdf] dark:border-gray-700 bg-white dark:bg-gray-800 h-12 px-4 shadow-sm hover:border-primary/50 cursor-pointer">
-<span class="material-symbols-outlined text-text-main dark:text-gray-400 mr-2 text-[20px]">calendar_today</span>
-<div class="flex flex-col justify-center">
-<span class="text-[10px] uppercase font-bold text-text-main leading-none mb-0.5">Check-out</span>
-<span class="text-text-dark dark:text-white text-xs font-medium leading-none">Sept 20</span>
-</div>
-</div>
-</div>
-<!-- Guests -->
-<div class="flex-0 min-w-[140px]">
-<div class="relative flex items-center">
-<select class="appearance-none w-full rounded-full border border-[#e2dfdf] dark:border-gray-700 bg-white dark:bg-gray-800 h-12 pl-4 pr-10 text-text-dark dark:text-white text-sm font-medium shadow-sm focus:ring-2 focus:ring-primary focus:border-transparent cursor-pointer">
-<option value="1">1 Guest</option>
-<option selected="" value="2">2 Guests</option>
-<option value="3">3 Guests</option>
-<option value="4+">4+ Guests</option>
-</select>
-<span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-text-main pointer-events-none">expand_more</span>
-</div>
-</div>
-<!-- Price Slider Container -->
-<div class="hidden xl:flex flex-col justify-center min-w-[240px] px-2">
-<div class="flex justify-between items-center mb-1.5">
-<span class="text-xs font-medium text-text-main">Price range</span>
-<span class="text-xs font-bold text-text-dark dark:text-white">$50 - $500</span>
-</div>
-<!-- Slider Component Adapted -->
-<div class="relative h-1.5 w-full rounded-full bg-[#e2dfdf] dark:bg-gray-700">
-<div class="absolute left-[10%] right-[30%] h-full rounded-full bg-primary"></div>
-<div class="absolute left-[10%] top-1/2 -translate-y-1/2 size-4 bg-white border-2 border-primary rounded-full shadow cursor-pointer hover:scale-110 transition-transform"></div>
-<div class="absolute right-[30%] top-1/2 -translate-y-1/2 size-4 bg-white border-2 border-primary rounded-full shadow cursor-pointer hover:scale-110 transition-transform"></div>
-</div>
-</div>
-<!-- Mobile/Tablet Filter Button (Visual only) -->
-<button class="xl:hidden flex items-center justify-center size-12 rounded-full border border-[#e2dfdf] bg-white text-text-dark shadow-sm hover:bg-gray-50">
-<span class="material-symbols-outlined">tune</span>
-</button>
-<!-- Search Button -->
-<button class="bg-primary hover:bg-primary/90 text-white h-12 px-8 rounded-full font-bold text-sm shadow-md flex items-center gap-2 transition-transform active:scale-95 ml-auto lg:ml-0">
-<span class="material-symbols-outlined text-[20px]">search</span>
-<span>Search</span>
-</button>
-</div>
-</div>
+</header><!-- Basic Filter Bar -->
+<section class="bg-white dark:bg-background-dark border-b border-[#e2dfdf] py-4 sticky top-20 z-40">
+  <div class="max-w-[1440px] mx-auto px-6 md:px-10">
+    
+    <form class="flex flex-col lg:flex-row items-center gap-4">
+
+      <!-- Location -->
+      <div class="w-full lg:w-1/3">
+        <input
+          type="text"
+          placeholder="City"
+          class="w-full h-11 rounded-full border border-[#e2dfdf] px-4 text-sm focus:ring-2 focus:ring-primary focus:outline-none"
+        />
+      </div>
+
+      <!-- Check-in -->
+      <div class="w-full lg:w-1/5">
+        <input
+          type="date"
+          class="w-full h-11 rounded-full border border-[#e2dfdf] px-4 text-sm focus:ring-2 focus:ring-primary focus:outline-none"
+        />
+      </div>
+
+      <!-- Check-out -->
+      <div class="w-full lg:w-1/5">
+        <input
+          type="date"
+          class="w-full h-11 rounded-full border border-[#e2dfdf] px-4 text-sm focus:ring-2 focus:ring-primary focus:outline-none"
+        />
+      </div>
+
+      <!-- Guests -->
+      <div class="w-full lg:w-1/6">
+        <select
+          class="w-full h-11 rounded-full border border-[#e2dfdf] px-4 text-sm focus:ring-2 focus:ring-primary focus:outline-none"
+        >
+          <option value="1">1 Guest</option>
+          <option value="2">2 Guests</option>
+          <option value="3">3 Guests</option>
+          <option value="4">4+ Guests</option>
+        </select>
+      </div>
+
+      <!-- Search Button -->
+      <button
+        type="submit"
+        class="h-11 px-8 rounded-full bg-primary text-white text-sm font-semibold hover:bg-primary/90 transition"
+      >
+        Search
+      </button>
+
+    </form>
+
+  </div>
 </section>
+
 <!-- Main Content Grid -->
 <main class="flex-grow w-full max-w-[1440px] mx-auto px-6 md:px-10 py-8">
 <!-- Section Header -->
@@ -154,221 +164,57 @@
 </div>
 <!-- Grid -->
 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-6 gap-y-10">
-<!-- Card 1 -->
-<div class="group cursor-pointer flex flex-col gap-3">
-<div class="relative aspect-[1/1.05] w-full overflow-hidden rounded-xl bg-gray-200">
-<div class="absolute top-3 right-3 z-10">
-<button class="flex items-center justify-center size-8 rounded-full bg-white/70 hover:bg-white backdrop-blur-sm transition-all text-text-dark hover:scale-105">
-<span class="material-symbols-outlined text-[20px] font-light">favorite</span>
-</button>
-</div>
-<div class="size-full bg-cover bg-center transition-transform duration-500 group-hover:scale-105" data-alt="Modern bright living room with large windows" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAWI_nnp2FSNEttcSyR8JkiKUFJBu_2DU-qvLwa-8D8KT-cXzAKnHvP3qur8WuAgQtc2Zw7Cs2SDYD7Q12KnOK_tgue88iPK03qUyZqNRj1SRM61Ifk92n4QCiDev0dEG66rXpfMoDj-5BE0aEW7RR4Yig3eJZV4Z25WTB5IeJ-_yVgvdisCOXkXd0zMJJVPhhrdI7yP33GjRBROjkpyw82mUHM7wJh2T7XeZPm5Eo76GORGmFw1RJZmwuEWEUu7ir9hGMm0oNyPUA");'></div>
-</div>
-<div class="flex flex-col gap-1">
-<div class="flex justify-between items-start">
-<h3 class="font-bold text-text-dark dark:text-white text-base leading-tight group-hover:underline decoration-1 underline-offset-2">Cozy Loft in Manhattan</h3>
-<div class="flex items-center gap-1 text-sm">
-<span class="material-symbols-outlined text-primary text-[16px] fill-current">star</span>
-<span class="text-text-dark dark:text-white font-medium">4.92</span>
-</div>
-</div>
-<p class="text-text-main text-sm">New York, NY</p>
-<div class="mt-1 flex items-baseline gap-1">
-<span class="text-text-dark dark:text-white font-bold text-base">$145</span>
-<span class="text-text-main text-sm">night</span>
-</div>
-</div>
-</div>
-<!-- Card 2 -->
-<div class="group cursor-pointer flex flex-col gap-3">
-<div class="relative aspect-[1/1.05] w-full overflow-hidden rounded-xl bg-gray-200">
-<div class="absolute top-3 right-3 z-10">
-<button class="flex items-center justify-center size-8 rounded-full bg-white/70 hover:bg-white backdrop-blur-sm transition-all text-primary hover:scale-105">
-<span class="material-symbols-outlined text-[20px] font-fill filled">favorite</span>
-</button>
-</div>
-<div class="size-full bg-cover bg-center transition-transform duration-500 group-hover:scale-105" data-alt="Modern apartment interior with stylish furniture" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuC5eAGCVgnjBVERz7uSqnJDOFsLUd-6dL6a8Ww0BUMVxkFitTkmKM067gPl83fjUYCszeZYYDM7hEHRGnS2ZbXHYDa4A1tRlm947z2DmPwAL0dc7i8XWx1_GxkYOoMtISi6570XKSHjHhWN1KDBKmu1JWu-_wJSRc5YYineuNF7EZXpnpfaaG1uXfZI3ngbgI91fhdpQ6_TL7j3XlC8BQPK9lSpsR1nLdnOATXXOQUcnJSWYcRp1nrmBiaOpQ2SvXlbZLib26SVgcc");'></div>
-</div>
-<div class="flex flex-col gap-1">
-<div class="flex justify-between items-start">
-<h3 class="font-bold text-text-dark dark:text-white text-base leading-tight group-hover:underline decoration-1 underline-offset-2">Luxury Studio Midtown</h3>
-<div class="flex items-center gap-1 text-sm">
-<span class="material-symbols-outlined text-primary text-[16px] fill-current">star</span>
-<span class="text-text-dark dark:text-white font-medium">4.85</span>
-</div>
-</div>
-<p class="text-text-main text-sm">New York, NY</p>
-<div class="mt-1 flex items-baseline gap-1">
-<span class="text-text-dark dark:text-white font-bold text-base">$220</span>
-<span class="text-text-main text-sm">night</span>
-</div>
-</div>
-</div>
-<!-- Card 3 -->
-<div class="group cursor-pointer flex flex-col gap-3">
-<div class="relative aspect-[1/1.05] w-full overflow-hidden rounded-xl bg-gray-200">
-<div class="absolute top-3 right-3 z-10">
-<button class="flex items-center justify-center size-8 rounded-full bg-white/70 hover:bg-white backdrop-blur-sm transition-all text-text-dark hover:scale-105">
-<span class="material-symbols-outlined text-[20px] font-light">favorite</span>
-</button>
-</div>
-<div class="size-full bg-cover bg-center transition-transform duration-500 group-hover:scale-105" data-alt="Spacious bedroom with minimal decor" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDTXKB5xo3kcLgckiw_ypeDsh0MuPNfSYc8QPfaVCoX8U72YVnGqozpsETHzX1QVEoCOwnuZcFiiyJ78JMJE91o4cL23d3ts8N6fPTrxtSNhiIJFCbH1RLHemSDOzvjBAguPqNQsVwxCJlw8vRbL4S45Ztnbun7a1xAYudJdXiwYme49rtbCCvy8VydhKx68kMtH0DavX6L8t0nhaYl0VQHUw7bChxHooJhgEnya2HH6GgLq2uocIGJA-56Mv0JYF0zD_kffI0rjXE");'></div>
-</div>
-<div class="flex flex-col gap-1">
-<div class="flex justify-between items-start">
-<h3 class="font-bold text-text-dark dark:text-white text-base leading-tight group-hover:underline decoration-1 underline-offset-2">Quiet Retreat in Brooklyn</h3>
-<div class="flex items-center gap-1 text-sm">
-<span class="material-symbols-outlined text-primary text-[16px] fill-current">star</span>
-<span class="text-text-dark dark:text-white font-medium">5.0</span>
-</div>
-</div>
-<p class="text-text-main text-sm">Brooklyn, NY</p>
-<div class="mt-1 flex items-baseline gap-1">
-<span class="text-text-dark dark:text-white font-bold text-base">$95</span>
-<span class="text-text-main text-sm">night</span>
-</div>
-</div>
-</div>
-<!-- Card 4 -->
-<div class="group cursor-pointer flex flex-col gap-3">
-<div class="relative aspect-[1/1.05] w-full overflow-hidden rounded-xl bg-gray-200">
-<div class="absolute top-3 right-3 z-10">
-<button class="flex items-center justify-center size-8 rounded-full bg-white/70 hover:bg-white backdrop-blur-sm transition-all text-text-dark hover:scale-105">
-<span class="material-symbols-outlined text-[20px] font-light">favorite</span>
-</button>
-</div>
-<div class="size-full bg-cover bg-center transition-transform duration-500 group-hover:scale-105" data-alt="Bright airy kitchen and dining area" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuB3c_XBlxxXm-j1rzaD0W2O7_KlU0UsvlRaRbPXZr13UfOLfcXUeHucbDUsIl6mAVglAXuxLKQF1KNtNvovg0AkQeCX8BSyLWRSkJ_9LgSdeGKhvL0OUN-oDvMotxHFqAC1ODiT39Ym05H5nsISVr2Jh93dnGYS73G_oCk_g2Ahw-MgXmmzk5ikebEZ72XRHU2uUqTeEJxoVX3kRxjYwpTzrlZt7CMquEC-7fGg2-MIo-b4kq1woMRtg2e61zlIzdJGQ0N31i23szE");'></div>
-</div>
-<div class="flex flex-col gap-1">
-<div class="flex justify-between items-start">
-<h3 class="font-bold text-text-dark dark:text-white text-base leading-tight group-hover:underline decoration-1 underline-offset-2">Sunny SoHo Apartment</h3>
-<div class="flex items-center gap-1 text-sm">
-<span class="material-symbols-outlined text-primary text-[16px] fill-current">star</span>
-<span class="text-text-dark dark:text-white font-medium">4.76</span>
-</div>
-</div>
-<p class="text-text-main text-sm">New York, NY</p>
-<div class="mt-1 flex items-baseline gap-1">
-<span class="text-text-dark dark:text-white font-bold text-base">$350</span>
-<span class="text-text-main text-sm">night</span>
-</div>
-</div>
-</div>
-<!-- Card 5 -->
-<div class="group cursor-pointer flex flex-col gap-3">
-<div class="relative aspect-[1/1.05] w-full overflow-hidden rounded-xl bg-gray-200">
-<div class="absolute top-3 right-3 z-10">
-<button class="flex items-center justify-center size-8 rounded-full bg-white/70 hover:bg-white backdrop-blur-sm transition-all text-text-dark hover:scale-105">
-<span class="material-symbols-outlined text-[20px] font-light">favorite</span>
-</button>
-</div>
-<div class="size-full bg-cover bg-center transition-transform duration-500 group-hover:scale-105" data-alt="Minimalist bedroom with wooden bed frame" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDGsgCrFrBIKy0BDbSK_Lkk361RdAG223ukHFk00ePqLXTnu15i-8360MNTaWH6geFxoB1UeWCITt6tvW8fv-gsb1TmhllwUegUPd8xBGdWCD0JES-A0BFPb46PzW0K0FKyM3_ZOUk6nrbbh_VrqOXf6wv5k2ijuT4PLKdM7dqHo9CrNi63gv6Yn8_JiuvKlbyLzriewk20trAUvum77F_EyOof4_oGuApYdDUdB2YusaB0E-nUDaJ8dYCxr9c8xEh30-XW3HvsN9w");'></div>
-</div>
-<div class="flex flex-col gap-1">
-<div class="flex justify-between items-start">
-<h3 class="font-bold text-text-dark dark:text-white text-base leading-tight group-hover:underline decoration-1 underline-offset-2">Minimalist Queens Room</h3>
-<div class="flex items-center gap-1 text-sm">
-<span class="material-symbols-outlined text-primary text-[16px] fill-current">star</span>
-<span class="text-text-dark dark:text-white font-medium">4.60</span>
-</div>
-</div>
-<p class="text-text-main text-sm">Queens, NY</p>
-<div class="mt-1 flex items-baseline gap-1">
-<span class="text-text-dark dark:text-white font-bold text-base">$75</span>
-<span class="text-text-main text-sm">night</span>
-</div>
-</div>
-</div>
-<!-- Card 6 -->
-<div class="group cursor-pointer flex flex-col gap-3">
-<div class="relative aspect-[1/1.05] w-full overflow-hidden rounded-xl bg-gray-200">
-<div class="absolute top-3 right-3 z-10">
-<button class="flex items-center justify-center size-8 rounded-full bg-white/70 hover:bg-white backdrop-blur-sm transition-all text-text-dark hover:scale-105">
-<span class="material-symbols-outlined text-[20px] font-light">favorite</span>
-</button>
-</div>
-<div class="size-full bg-cover bg-center transition-transform duration-500 group-hover:scale-105" data-alt="High end kitchen with marble island" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCWmluzxR6iu89jdD_wJgQcIJ8eLJTp_x2uz7tt1WXc6WAOpvg-5mFWJEvj7BPT0goSIHxuU9ZiTFygC_LduQTi-mDLcf4QCrJ3LsSLneHerOPyhUPRTAi6gSWzlIHY3TSHnthAVfJ2Dorf0uJr3m6YGFh22jnQ-YbmXCiZsUsFJROrtgZ6k6uNzIEAvZwgOHjLQ4uYGBisPW2GoYC4lqacdVwPKq_ZzSQbOf-QEjehXOapezXaTaiQbxz1W5xYGkz40xBoyXWu-TI");'></div>
-</div>
-<div class="flex flex-col gap-1">
-<div class="flex justify-between items-start">
-<h3 class="font-bold text-text-dark dark:text-white text-base leading-tight group-hover:underline decoration-1 underline-offset-2">Penthouse with View</h3>
-<div class="flex items-center gap-1 text-sm">
-<span class="material-symbols-outlined text-primary text-[16px] fill-current">star</span>
-<span class="text-text-dark dark:text-white font-medium">4.98</span>
-</div>
-</div>
-<p class="text-text-main text-sm">New York, NY</p>
-<div class="mt-1 flex items-baseline gap-1">
-<span class="text-text-dark dark:text-white font-bold text-base">$800</span>
-<span class="text-text-main text-sm">night</span>
-</div>
-</div>
-</div>
-<!-- Card 7 -->
-<div class="group cursor-pointer flex flex-col gap-3">
-<div class="relative aspect-[1/1.05] w-full overflow-hidden rounded-xl bg-gray-200">
-<div class="absolute top-3 right-3 z-10">
-<button class="flex items-center justify-center size-8 rounded-full bg-white/70 hover:bg-white backdrop-blur-sm transition-all text-text-dark hover:scale-105">
-<span class="material-symbols-outlined text-[20px] font-light">favorite</span>
-</button>
-</div>
-<div class="size-full bg-cover bg-center transition-transform duration-500 group-hover:scale-105" data-alt="Eclectic living room with plants and art" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuClAErv-AfE89hgUO5yudMzvX3Bp7xWEAUCdqQla41kt0oVzJVONDW_3mXHGfBbwe7uljuoDuHGyVtBbV6-2ots8y9bQNq-wRmU5HKj1tZK-r1Hzj-UqhoPI4M00B7QnkO6oKghOlPnhQnB0BNqfX1qEGrYR1tNjG65xsLCCrssXpltVZ1VCwXOKmKV0-2ubDluIaK_XkPXmztjv9ixh5m1L9PXN8elNTxmSVGtyyeJuDel5x6wCjVvPKfl6beMnU1yyFkdZLBq63A");'></div>
-</div>
-<div class="flex flex-col gap-1">
-<div class="flex justify-between items-start">
-<h3 class="font-bold text-text-dark dark:text-white text-base leading-tight group-hover:underline decoration-1 underline-offset-2">Artistic Haven in Harlem</h3>
-<div class="flex items-center gap-1 text-sm">
-<span class="material-symbols-outlined text-primary text-[16px] fill-current">star</span>
-<span class="text-text-dark dark:text-white font-medium">4.72</span>
-</div>
-</div>
-<p class="text-text-main text-sm">Harlem, NY</p>
-<div class="mt-1 flex items-baseline gap-1">
-<span class="text-text-dark dark:text-white font-bold text-base">$110</span>
-<span class="text-text-main text-sm">night</span>
-</div>
-</div>
-</div>
-<!-- Card 8 -->
-<div class="group cursor-pointer flex flex-col gap-3">
-<div class="relative aspect-[1/1.05] w-full overflow-hidden rounded-xl bg-gray-200">
-<div class="absolute top-3 right-3 z-10">
-<button class="flex items-center justify-center size-8 rounded-full bg-white/70 hover:bg-white backdrop-blur-sm transition-all text-text-dark hover:scale-105">
-<span class="material-symbols-outlined text-[20px] font-light">favorite</span>
-</button>
-</div>
-<div class="size-full bg-cover bg-center transition-transform duration-500 group-hover:scale-105" data-alt="Classic brownstone bedroom interior" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCRi9TrDlEMczlFiW8unu0F4CDTORQxrQ-o3sJP2VExGWqpAydih9jnVkss2BAjbkMlM5tJVTOJItMooxqa3EXYLifSY8EReIiK7oo_BeJWOyIBfmwJHXavkWZpBgq3c7mTTmrvKxr4rQuA44zAuqOueNK_MZhnNbKxJV_wuLlbWVjo-llWLBAwwQxbV1r1ADUq0QEREXwHaBL7k8LyKCS8yE4cpRSUNVy8iUmOqkDz6tExtIpCcetHncQOt5-CiFf8OWSG5gFq3Qw");'></div>
-</div>
-<div class="flex flex-col gap-1">
-<div class="flex justify-between items-start">
-<h3 class="font-bold text-text-dark dark:text-white text-base leading-tight group-hover:underline decoration-1 underline-offset-2">Classic Brownstone</h3>
-<div class="flex items-center gap-1 text-sm">
-<span class="material-symbols-outlined text-primary text-[16px] fill-current">star</span>
-<span class="text-text-dark dark:text-white font-medium">4.90</span>
-</div>
-</div>
-<p class="text-text-main text-sm">Brooklyn, NY</p>
-<div class="mt-1 flex items-baseline gap-1">
-<span class="text-text-dark dark:text-white font-bold text-base">$165</span>
-<span class="text-text-main text-sm">night</span>
-</div>
-</div>
-</div>
-</div>
-<!-- Pagination -->
-<div class="mt-16 flex items-center justify-center gap-2">
-<button class="flex items-center justify-center size-10 rounded-full hover:bg-gray-100 disabled:opacity-50 disabled:hover:bg-transparent text-text-dark dark:text-white transition-colors" disabled="">
-<span class="material-symbols-outlined">chevron_left</span>
-</button>
-<button class="flex items-center justify-center size-10 rounded-full bg-primary text-white font-semibold shadow-sm">1</button>
-<button class="flex items-center justify-center size-10 rounded-full hover:bg-gray-100 text-text-main dark:text-gray-300 transition-colors">2</button>
-<button class="flex items-center justify-center size-10 rounded-full hover:bg-gray-100 text-text-main dark:text-gray-300 transition-colors">3</button>
-<span class="flex items-center justify-center size-10 text-text-main">...</span>
-<button class="flex items-center justify-center size-10 rounded-full hover:bg-gray-100 text-text-main dark:text-gray-300 transition-colors">15</button>
-<button class="flex items-center justify-center size-10 rounded-full hover:bg-gray-100 text-text-dark dark:text-white transition-colors">
-<span class="material-symbols-outlined">chevron_right</span>
-</button>
-</div>
+
+<?php foreach ($rentals as $rental): ?>
+
+  <?php $image = $rental['cover_image'] ?? 'default.jpg'; ?>
+    <?php if ($rental['isActive'] && $rental['isAvailable']): ?>
+
+   <a href="/Views/rentalDetails.view.php?id=<?= $rental['id'] ?>" class="cursor-pointer">
+
+        <!-- Image -->
+        <div class="relative aspect-[1/1.05] w-full overflow-hidden rounded-xl bg-gray-200">
+            <div class="absolute top-3 right-3 z-10">
+                <button class="flex items-center justify-center size-8 rounded-full bg-white/70 hover:bg-white backdrop-blur-sm transition-all">
+                    <span class="material-symbols-outlined text-[20px]">favorite</span>
+                </button>
+            </div>
+
+            <div class="size-full bg-cover bg-center transition-transform duration-500 group-hover:scale-105"
+                 style="background-image: url('/public/uploads/<?= htmlspecialchars($image) ?>');">
+
+            </div>
+        </div>
+
+        <!-- Infos -->
+        <div class='flex flex-col gap-1'>
+
+            <div class='flex justify-between items-start'>
+                <h3 class='font-bold text-text-dark text-base leading-tight group-hover:underline'>
+                    <?= htmlspecialchars($rental['title']) ?>
+                </h3>
+            </div>
+
+            <p class='text-text-main text-sm'>
+                <?= htmlspecialchars($rental['city']) ?>
+            </p>
+
+            <div class='mt-1 flex items-baseline gap-1'>
+                <span class='font-bold text-text-dark text-base'>
+                    $<?= htmlspecialchars($rental['pricePerNight']) ?>
+                </span>
+                <span class='text-text-main text-sm'>/ night</span>
+            </div>
+
+        </div>
+   </a>
+
+    <?php endif; ?>
+<?php endforeach; ?>
+
+
+
+
 </main>
 <!-- Footer -->
 <footer class="bg-[#f3f2f1] dark:bg-gray-900 border-t border-[#e2dfdf] dark:border-gray-800 py-10 mt-10">

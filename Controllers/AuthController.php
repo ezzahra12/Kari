@@ -4,6 +4,7 @@ require_once __DIR__ . '/../models/database.php';
 require_once __DIR__ . '/../models/Host.php';
 require_once __DIR__ . '/../models/Admin.php';
 require_once __DIR__ . '/../models/Traveler.php';
+
 class AuthController
 {
 
@@ -26,31 +27,28 @@ class AuthController
 
         if ($user['role'] == "admin") {
 
-          $_SESSION['user'] = new Admin($user['id'],$user['name'], $user['email'], $user['password'], $user['role'], $user['isActive']);
+          $_SESSION['user'] = new Admin($user['id'], $user['name'], $user['email'], $user['password'], $user['role'], $user['isActive']);
           header("location:  /views/admin/aHome.view.php");
           exit;
         }
         if ($user['role'] == "traveler") {
-          $_SESSION['user'] = new Traveler($user['id'],$user['name'], $user['email'], $user['password'], $user['role'], $user['isActive']);
+          $_SESSION['user'] = new Traveler($user['id'], $user['name'], $user['email'], $user['password'], $user['role'], $user['isActive']);
 
           header("location:  /views/index.view.php");
           exit;
         }
         if ($user['role'] == "host") {
-          if(empty($user['id'])) {
-    die("User ID not set!");
-}else{
-$_SESSION['user'] = new Host(
-    (int)$user['id'],
-    $user['name'],
-    $user['email'],
-    $user['password'],
-    (bool)$user['isActive']
-);
-
-}
-         
-
+          if (empty($user['id'])) {
+            die("User ID not set!");
+          } else {
+            $_SESSION['user'] = new Host(
+              (int)$user['id'],
+              $user['name'],
+              $user['email'],
+              $user['password'],
+              (bool)$user['isActive']
+            );
+          }
 
           header("location:  /views/host/hDashboard.view.php");
           exit;
@@ -94,6 +92,7 @@ $_SESSION['user'] = new Host(
       exit;
     }
   }
+
   public function logOut()
   {
     if (isset($_POST['logOut'])) {

@@ -11,6 +11,8 @@ CREATE TABLE users(
     isActive BOOLEAN NOT NULL DEFAULT TRUE
 );
 
+
+SELECT * FROM rentals WHERE id = 3;
 CREATE TABLE rentals(
     id INT AUTO_INCREMENT PRIMARY KEY,
     title VARCHAR(150) NOT NULL,
@@ -32,6 +34,22 @@ CREATE TABLE reservations(
     FOREIGN KEY(id_traveler) REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY(id_rental) REFERENCES rentals(id) ON DELETE CASCADE ON UPDATE CASCADE
 );
+
+
+ALTER TABLE reservations
+ADD COLUMN status ENUM('pending','confirmed','cancelled','completed')
+DEFAULT 'confirmed';
+
+
+ALTER TABLE reservations
+ADD COLUMN created_at TIMESTAMP
+DEFAULT CURRENT_TIMESTAMP;
+
+
+ALTER TABLE reservations
+MODIFY startDate DATE NOT NULL,
+MODIFY endDate DATE NOT NULL;
+
 
 CREATE TABLE reviews(
     id INT AUTO_INCREMENT PRIMARY KEY,

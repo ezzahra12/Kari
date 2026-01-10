@@ -1,3 +1,11 @@
+<?php
+require __DIR__ . '/../models/Traveler.php';
+if (!isset($_SESSION['user']) || !($_SESSION['user'] instanceof Traveler)) {
+    header("Location: /Views/auth/login.view.php");
+    exit;
+}
+
+?>
 <!DOCTYPE html>
 <html class="light" lang="en"><head>
 <meta charset="utf-8"/>

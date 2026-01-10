@@ -137,10 +137,13 @@ class Rental {
      $rentals=$stmt->fetch(PDO :: FETCH_ASSOC);
      return $rentals;
    }
-   public function getRental($id){
+   public static function getRental($id){
      $pdo=Database::getConnection();
-     $stmt=$pdo->prepare("SELECT * from rentals where id=? ");
-     $rentals=$stmt->fetch(PDO :: FETCH_ASSOC);
+     $stmt = $pdo->prepare("SELECT * from rentals where id= :id ");
+     $stmt->execute([
+        ":id" => $id
+     ]);
+     $rentals = $stmt->fetch(PDO::FETCH_ASSOC);
      return $rentals;
    }
     public function deleteRental():bool{
